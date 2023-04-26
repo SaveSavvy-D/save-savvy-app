@@ -1,6 +1,7 @@
 import Header from './components/common/Header';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import store from './store/store';
+import { Provider } from 'react-redux';
 
 function App() {
   return (

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getCookie } from '../utils/cookie';
-import { STATUSES } from './userSlice';
+import { STATUSES } from '../constants/statuses';
 
 const initialState = {
   data: [],
