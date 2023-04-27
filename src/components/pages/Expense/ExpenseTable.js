@@ -29,7 +29,7 @@ export const ExpenseTable = () => {
   };
 
   return (
-    <div className='container'>
+    <div className="container">
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -48,7 +48,7 @@ export const ExpenseTable = () => {
               <td>{expense?.amount}</td>
               <td>{expense?.category?.title}</td>
               <td>
-                <Button variant='link' onClick={() => handleEdit(expense)}>
+                <Button variant="link" onClick={() => handleEdit(expense)}>
                   View
                 </Button>
               </td>

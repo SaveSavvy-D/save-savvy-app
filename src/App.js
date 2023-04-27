@@ -1,24 +1,21 @@
 import Header from './components/common/Header';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import store from './store/store';
-import { Provider } from 'react-redux';
 import { Expenses } from './components/pages/Expense/Expenses';
+import { Budgets } from './components/pages/Budget/Budgets';
 
 function App() {
   return (
-    <Provider store={store}>
-      <div className='App'>
-        <BrowserRouter>
-          <Header />
-          <Routes>
-            <Route path='/' element={<h1>Dashboard</h1>} />
-            <Route path='/expenses' element={<Expenses />} />
-            <Route path='/budgets' element={<h1>Budgets</h1>} />
-            <Route path='/alerts' element={<h1>Alerts</h1>} />
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </Provider>
+    <div className="App">
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<h1>Dashboard</h1>} />
+          <Route path="/expenses" element={<Expenses />} />
+          <Route path="/budgets" element={<Budgets />} />
+          <Route path="/alerts" element={<h1>Alerts</h1>} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 
