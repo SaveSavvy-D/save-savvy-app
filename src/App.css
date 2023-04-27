@@ -9,3 +9,18 @@
 .margin-right-100 {
   margin-right: 100px;
 }
+
+.margin-bottom-50 {
+  margin-bottom: 50px;
+}
+
+.page-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.font-arapey {
+  font-family: 'Arapey';
+}

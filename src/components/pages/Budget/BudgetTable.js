@@ -3,6 +3,7 @@ import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { STATUSES } from '../../../constants/statuses';
 import { fetchBudgets } from '../../../store/budgetSlice';
+import '../../../App.css';
 
 export const BudgetTable = () => {
   const dispatch = useDispatch();

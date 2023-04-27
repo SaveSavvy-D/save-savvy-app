@@ -10,7 +10,12 @@ import '../../App.css';
 
 function Header() {
   return (
-    <Navbar collapseOnSelect expand="lg" variant="dark">
+    <Navbar
+      collapseOnSelect
+      expand="lg"
+      variant="dark"
+      className="margin-bottom-50"
+    >
       <Container>
         <Navbar.Brand as={Link} to="/">
           <FontAwesomeIcon icon={faSackDollar} className="margin-right-5" />
