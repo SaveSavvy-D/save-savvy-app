@@ -3,8 +3,11 @@ import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { STATUSES } from '../../../constants/statuses';
 import { fetchBudgets } from '../../../store/budgetSlice';
-import '../../../App.css';
 import { Container, Button } from 'react-bootstrap';
+import { Budget } from './Budget';
+import { AppSpinner } from '../../common/AppSpinner';
+import { AppAlert } from '../../common/AppAlert';
+import '../../../App.css';
 
 export const BudgetTable = () => {
   const dispatch = useDispatch();
@@ -22,10 +25,10 @@ export const BudgetTable = () => {
   };
 
   if (status === STATUSES.LOADING) {
-    return <h2>Loading.....</h2>;
+    return <AppSpinner />;
   }
   if (status === STATUSES.ERROR) {
-    return <h2>Something went wrong!</h2>;
+    return <AppAlert variant={'danger'} message="Oops! Something went wrong" />;
   }
 
   return (
@@ -43,17 +46,16 @@ export const BudgetTable = () => {
         <tbody>
           {budgets?.data?.budgets.length ? (
             budgets?.data?.budgets.map((budget, index) => (
-              <tr key={budget?._id}>
-                <td>{index + 1 + (currentPage.current - 1) * 5}</td>
-                <td>{budget?.categoryId.title}</td>
-                <td>{budget?.threshold}</td>
-                <td>{budget?.startDate.substring(0, 10)}</td>
-                <td>{budget?.endDate.substring(0, 10)}</td>
-              </tr>
+              <Budget
+                key={budget?._id}
+                index={index}
+                budget={budget}
+                currentPage={currentPage}
+              />
             ))
           ) : (
             <tr>
-              <td colSpan="5">No budgets found</td>
+              <td colSpan="5">There are no items to display</td>
             </tr>
           )}
         </tbody>
@@ -67,14 +69,15 @@ export const BudgetTable = () => {
             Previous
           </Button>
         )}
-        {budgets?.data?.budgets.length && (
-          <Button
-            variant="link"
-            onClick={() => getResults(currentPage.current + 1)}
-          >
-            Next
-          </Button>
-        )}
+        {budgets?.data?.budgets.length &&
+          budgets?.data?.remainingRecords > 0 && (
+            <Button
+              variant="link"
+              onClick={() => getResults(currentPage.current + 1)}
+            >
+              Next
+            </Button>
+          )}
       </Container>
     </>
   );

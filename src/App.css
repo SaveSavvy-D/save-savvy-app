@@ -38,3 +38,15 @@
   display: flex;
   justify-content: center;
 }
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.spinner {
+  width: 5rem;
+  height: 5rem;
+}
