@@ -13,7 +13,9 @@ export const Budgets = () => {
           <FontAwesomeIcon icon={faPenToSquare} className="margin-right-5" />
           Budgets
         </h2>
-        <Button>+ Add Budget</Button>
+        <Button variant="success" className="bg-color-green">
+          + Add Budget
+        </Button>
       </div>
       <BudgetTable />
     </Container>

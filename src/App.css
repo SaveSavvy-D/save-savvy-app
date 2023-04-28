@@ -24,3 +24,17 @@
 .font-arapey {
   font-family: 'Arapey';
 }
+
+.bg-color-green {
+  background-color: #1dbb6f;
+  border: transparent;
+}
+
+.table-text {
+  text-align: center;
+}
+
+.table-navigators {
+  display: flex;
+  justify-content: center;
+}

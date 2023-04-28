@@ -9,18 +9,23 @@ const initialState = {
 
 export const fetchBudgets = createAsyncThunk(
   'expense/fetchBudgets',
-  async () => {
+  async (pageNum = 1) => {
+    const queryParams = new URLSearchParams({ page: pageNum });
+
     const token =
       getCookie('token') ||
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOnsiX2lkIjoiNjQyZmY0MjdhYTNhYmY0NzVhM2QzOTBhIiwiZW1haWwiOiJoYXJvb24ub21lckBkZXZzaW5jLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEyJFpUZ0tvbmJuUUFtOHdnU3Y5eGJ1WE9iSjcubXd6TWZ1ck52bXhmckgybkt0UHdFY2g4Mm4uIiwiX192IjowfSwiaWF0IjoxNjgyNTkyNDUyLCJleHAiOjE2ODI2Mjg0NTJ9.xpiuaF-j4V2id134gFz14gOxOVFoC9TY9BkRTaa0ZQI';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOnsiX2lkIjoiNjQyZmY0MjdhYTNhYmY0NzVhM2QzOTBhIiwiZW1haWwiOiJoYXJvb24ub21lckBkZXZzaW5jLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEyJFpUZ0tvbmJuUUFtOHdnU3Y5eGJ1WE9iSjcubXd6TWZ1ck52bXhmckgybkt0UHdFY2g4Mm4uIiwiX192IjowfSwiaWF0IjoxNjgyNjU5NzgzLCJleHAiOjE2ODI2OTU3ODN9.K-FCzzkZllOtRpbGc50npjvFcWvv81zTZWYcy4s2byY';
 
-    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/budgets/my`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/budgets/my?${queryParams}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     const data = await res.json();
     console.log(token, data);
     return data;
