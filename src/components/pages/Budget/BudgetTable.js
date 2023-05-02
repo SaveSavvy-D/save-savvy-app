@@ -41,6 +41,7 @@ export const BudgetTable = () => {
             <th>Threshold</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <th>Details</th>
           </tr>
         </thead>
         <tbody>
@@ -51,6 +52,7 @@ export const BudgetTable = () => {
                 index={index}
                 budget={budget}
                 currentPage={currentPage}
+                categories={budgets?.data?.categories}
               />
             ))
           ) : (
@@ -69,15 +71,14 @@ export const BudgetTable = () => {
             Previous
           </Button>
         )}
-        {budgets?.data?.budgets.length &&
-          budgets?.data?.remainingRecords > 0 && (
-            <Button
-              variant="link"
-              onClick={() => getResults(currentPage.current + 1)}
-            >
-              Next
-            </Button>
-          )}
+        {budgets?.data?.remainingRecords > 0 && (
+          <Button
+            variant="link"
+            onClick={() => getResults(currentPage.current + 1)}
+          >
+            Next
+          </Button>
+        )}
       </Container>
     </>
   );
