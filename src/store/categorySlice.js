@@ -4,7 +4,7 @@ import { STATUSES } from '../constants/statuses';
 
 const initialState = {
   data: [],
-  status: STATUSES.IDLE,
+  categoryStatus: STATUSES.IDLE,
 };
 
 export const fetchCategories = createAsyncThunk(
@@ -34,14 +34,14 @@ const categorySlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchCategories.pending, (state, action) => {
-        state.status = STATUSES.LOADING;
+        state.categoryStatus = STATUSES.LOADING;
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.data = action.payload;
-        state.status = STATUSES.IDLE;
+        state.categoryStatus = STATUSES.IDLE;
       })
       .addCase(fetchCategories.rejected, (state, action) => {
-        state.status = STATUSES.ERROR;
+        state.categoryStatus = STATUSES.ERROR;
       });
   },
 });

@@ -14,6 +14,7 @@ export const BudgetTable = () => {
   const currentPage = useRef(1);
 
   const { data: budgets, status } = useSelector((state) => state.budget);
+  const { data: categories, categoryStatus } = useSelector((state) => state.category);
 
   useEffect(() => {
     dispatch(fetchBudgets());
@@ -24,10 +25,10 @@ export const BudgetTable = () => {
     dispatch(fetchBudgets(pageNum));
   };
 
-  if (status === STATUSES.LOADING) {
+  if ((status === STATUSES.LOADING) || (categoryStatus === STATUSES.LOADING) ) {
     return <AppSpinner />;
   }
-  if (status === STATUSES.ERROR) {
+  if ((status === STATUSES.ERROR) || (categoryStatus === STATUSES.ERROR) ) {
     return <AppAlert variant={'danger'} message="Oops! Something went wrong" />;
   }
 
@@ -52,7 +53,7 @@ export const BudgetTable = () => {
                 index={index}
                 budget={budget}
                 currentPage={currentPage}
-                categories={budgets?.data?.categories}
+                categories={categories?.data?.categories}
               />
             ))
           ) : (
