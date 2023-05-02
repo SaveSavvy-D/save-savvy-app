@@ -14,7 +14,7 @@ export const fetchBudgets = createAsyncThunk(
 
     const token =
       getCookie('token') ||
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOnsiX2lkIjoiNjQyZmY0MjdhYTNhYmY0NzVhM2QzOTBhIiwiZW1haWwiOiJoYXJvb24ub21lckBkZXZzaW5jLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEyJFpUZ0tvbmJuUUFtOHdnU3Y5eGJ1WE9iSjcubXd6TWZ1ck52bXhmckgybkt0UHdFY2g4Mm4uIiwiX192IjowfSwiaWF0IjoxNjgyNjU5NzgzLCJleHAiOjE2ODI2OTU3ODN9.K-FCzzkZllOtRpbGc50npjvFcWvv81zTZWYcy4s2byY';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOnsiX2lkIjoiNjQyZmY0MjdhYTNhYmY0NzVhM2QzOTBhIiwiZW1haWwiOiJoYXJvb24ub21lckBkZXZzaW5jLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEyJFpUZ0tvbmJuUUFtOHdnU3Y5eGJ1WE9iSjcubXd6TWZ1ck52bXhmckgybkt0UHdFY2g4Mm4uIiwiX192IjowfSwiaWF0IjoxNjgzMDAzNDk0LCJleHAiOjE2ODMwMzk0OTR9.hUG_W3b5sdTlPAtdW4TrGlvvEyWE6MLYWWd1Vkq0QxI';
 
     const res = await fetch(
       `${process.env.REACT_APP_BASE_URL}/budgets/my?${queryParams}`,
@@ -26,6 +26,28 @@ export const fetchBudgets = createAsyncThunk(
         },
       }
     );
+    const data = await res.json();
+    console.log(token, data);
+    return data;
+  }
+);
+
+export const updateBudget = createAsyncThunk(
+  'expense/updateBudget',
+  async ({ id, newData }) => {
+    const token =
+      getCookie('token') ||
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOnsiX2lkIjoiNjQyZmY0MjdhYTNhYmY0NzVhM2QzOTBhIiwiZW1haWwiOiJoYXJvb24ub21lckBkZXZzaW5jLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEyJFpUZ0tvbmJuUUFtOHdnU3Y5eGJ1WE9iSjcubXd6TWZ1ck52bXhmckgybkt0UHdFY2g4Mm4uIiwiX192IjowfSwiaWF0IjoxNjgzMDAzNDk0LCJleHAiOjE2ODMwMzk0OTR9.hUG_W3b5sdTlPAtdW4TrGlvvEyWE6MLYWWd1Vkq0QxI';
+
+    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/budgets/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(newData),
+    });
+
     const data = await res.json();
     console.log(token, data);
     return data;
@@ -46,6 +68,16 @@ const budgetSlice = createSlice({
         state.status = STATUSES.IDLE;
       })
       .addCase(fetchBudgets.rejected, (state, action) => {
+        state.status = STATUSES.ERROR;
+      })
+      .addCase(updateBudget.pending, (state, action) => {
+        state.status = STATUSES.LOADING;
+      })
+      .addCase(updateBudget.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.status = STATUSES.IDLE;
+      })
+      .addCase(updateBudget.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
       });
   },

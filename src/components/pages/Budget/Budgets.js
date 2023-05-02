@@ -8,7 +8,7 @@ import '../../../App.css';
 export const Budgets = () => {
   return (
     <Container>
-      <div className="page-header-row font-arapey">
+      <div className="page-header-row">
         <h2>
           <FontAwesomeIcon icon={faPenToSquare} className="margin-right-5" />
           Budgets

@@ -1,14 +1,26 @@
 import React from 'react';
-import { Modal, Button, Form, Alert } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { Modal, Button, Form } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { BudgetSchema } from '../../../utils/yup/schemas';
+import { updateBudget } from '../../../store/budgetSlice';
+import '../../../App.css';
 
-export const BudgetForm = ({
-  budget,
-  handleCloseModal,
-  handleUpdateBudget,
-  categories,
-}) => {
+export const BudgetForm = ({ budget, handleCloseModal, categories }) => {
+  const dispatch = useDispatch();
+
+  const handleUpdateBudget = (values) => {
+    const categoryId = categories.filter(
+      (category) => category.title === values.categoryTitle
+    );
+    dispatch(
+      updateBudget({
+        id: budget?._id,
+        newData: { ...values, categoryId: categoryId[0]._id },
+      })
+    );
+  };
+
   return (
     <>
       <Modal.Header closeButton>
@@ -26,6 +38,7 @@ export const BudgetForm = ({
           handleUpdateBudget(values);
           setSubmitting(false);
           handleCloseModal();
+          window.location.reload();
         }}
       >
         {({
@@ -39,7 +52,7 @@ export const BudgetForm = ({
         }) => (
           <Form onSubmit={handleSubmit}>
             <Modal.Body>
-              <Form.Group controlId="categoryTitle">
+              <Form.Group className="margin-bottom-3" controlId="categoryTitle">
                 <Form.Label>Category Title</Form.Label>
                 <Form.Control
                   as="select"
@@ -66,7 +79,7 @@ export const BudgetForm = ({
                   {errors.categoryTitle}
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group controlId="threshold">
+              <Form.Group className="margin-bottom-3" controlId="threshold">
                 <Form.Label>Threshold</Form.Label>
                 <Form.Control
                   type="number"
@@ -80,7 +93,7 @@ export const BudgetForm = ({
                   {errors.threshold}
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group controlId="startDate">
+              <Form.Group className="margin-bottom-3" controlId="startDate">
                 <Form.Label>Start Date</Form.Label>
                 <Form.Control
                   type="date"
@@ -94,7 +107,7 @@ export const BudgetForm = ({
                   {errors.startDate}
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group controlId="endDate">
+              <Form.Group className="margin-bottom-3" controlId="endDate">
                 <Form.Label>End Date</Form.Label>
                 <Form.Control
                   type="date"

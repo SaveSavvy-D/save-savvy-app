@@ -45,7 +45,7 @@ export const BudgetTable = () => {
           </tr>
         </thead>
         <tbody>
-          {budgets?.data?.budgets.length ? (
+          {budgets?.data?.budgets?.length ? (
             budgets?.data?.budgets.map((budget, index) => (
               <Budget
                 key={budget?._id}
