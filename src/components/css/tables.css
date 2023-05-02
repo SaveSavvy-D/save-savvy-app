@@ -1,0 +1,13 @@
+.table-header {
+  margin: 2rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-button {
+  background-color: #1dbb6f;
+  font-size: 18px;
+  border: 0;
+}
+
