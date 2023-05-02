@@ -94,8 +94,6 @@ export const createExpense = createAsyncThunk(
       body: JSON.stringify(expenseBody),
     });
     const data = await res.json();
-    // console.log(data);
-    dispatch(fetchExpenses());
 
     return data;
   }
@@ -117,9 +115,7 @@ export const updateExpense = createAsyncThunk(
       }
     );
     const data = await res.json();
-    console.log(data);
 
-    dispatch(fetchExpenses());
     return data;
   }
 );
