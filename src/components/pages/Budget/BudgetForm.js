@@ -3,20 +3,36 @@ import { useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { BudgetSchema } from '../../../utils/yup/schemas';
-import { updateBudget } from '../../../store/budgetSlice';
+import { updateBudget, createBudget } from '../../../store/budgetSlice';
 import '../../../App.css';
 
-export const BudgetForm = ({ budget, handleCloseModal, categories }) => {
+export const BudgetForm = ({
+  budget,
+  handleCloseModal,
+  categories,
+  create,
+}) => {
   const dispatch = useDispatch();
 
-  const handleUpdateBudget = (values) => {
+  const createPayload = (values) => {
     const categoryId = categories.filter(
       (category) => category.title === values.categoryTitle
     );
+
+    return { ...values, categoryId: categoryId[0]._id };
+  };
+
+  const handleCreateBudget = (values) => {
+    const payload = createPayload(values);
+    dispatch(createBudget({ newData: payload }));
+  };
+
+  const handleUpdateBudget = (values) => {
+    const payload = createPayload(values);
     dispatch(
       updateBudget({
         id: budget?._id,
-        newData: { ...values, categoryId: categoryId[0]._id },
+        newData: payload,
       })
     );
   };
@@ -35,7 +51,11 @@ export const BudgetForm = ({ budget, handleCloseModal, categories }) => {
         }}
         validationSchema={BudgetSchema}
         onSubmit={(values, { setSubmitting }) => {
-          handleUpdateBudget(values);
+          if (create) {
+            handleCreateBudget(values);
+          } else {
+            handleUpdateBudget(values);
+          }
           setSubmitting(false);
           handleCloseModal();
           window.location.reload();
@@ -62,8 +82,8 @@ export const BudgetForm = ({ budget, handleCloseModal, categories }) => {
                   value={values.categoryTitle}
                   isInvalid={touched.categoryTitle && errors.categoryTitle}
                 >
-                  <option value={values.categoryTitle}>
-                    {values.categoryTitle}
+                  <option value={values.categoryTitle || ''}>
+                    {values.categoryTitle || 'Select a category title'}
                   </option>
                   {categories
                     .filter(

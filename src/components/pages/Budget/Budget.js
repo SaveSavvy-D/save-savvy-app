@@ -37,6 +37,7 @@ export const Budget = ({ index, budget, currentPage, categories }) => {
           showModal={handleShowModal}
           handleCloseModal={handleCloseModal}
           categories={categories}
+          create={false}
         />
       </Modal>
     </>
