@@ -8,8 +8,16 @@ export const BudgetSchema = Yup.object().shape({
   startDate: Yup.date()
     .required('Start date is required')
     .min(
-      new Date(new Date().getFullYear(), new Date().getMonth() - 1),
-      'Start date cannot be in the previous month'
+      new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+      'Start date cannot be in a previous month'
+    )
+    .max(
+      new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate()
+      ),
+      'Start date cannot be in a future month'
     ),
   endDate: Yup.date()
     .required('End date is required')
@@ -25,7 +33,15 @@ export const BudgetSchema = Yup.object().shape({
       }
     )
     .max(
-      new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
-      'End date cannot be in the next month'
+      new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date(
+          new Date().getFullYear(),
+          new Date().getMonth() + 1,
+          0
+        ).getDate()
+      ),
+      'End date cannot be in a future month'
     ),
 });
