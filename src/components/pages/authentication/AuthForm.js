@@ -1,11 +1,19 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AuthSchema } from '../../../utils/yup/schemas';
 import { login, signup } from '../../../store/userSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const AuthForm = ({ type }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { authSuccess } = useSelector((state) => state.user);
+  useEffect(() => {
+    console.log('In use Effect');
+    if (authSuccess) navigate('/');
+  }, [authSuccess]);
+
   const onSubmit = (creds, { setSubmitting, resetForm }) => {
     type === 'LOGIN' ? dispatch(login(creds)) : dispatch(signup(creds));
     setSubmitting(false);

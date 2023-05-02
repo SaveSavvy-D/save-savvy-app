@@ -1,12 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { STATUSES } from '../constants/statuses';
 import Cookies from 'js-cookie';
-
 const initialState = {
   user: '',
   status: STATUSES.IDLE,
+  authSuccess: false,
 };
-
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -19,9 +18,13 @@ const userSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.status = STATUSES.IDLE;
         state.user = action.payload;
-        !action.payload.errors
-          ? Cookies.set('token', action.payload.data.token)
-          : Cookies.set('token', '');
+        if (!action.payload.errors) {
+          Cookies.set('token', action.payload.data.token);
+          state.authSuccess = true;
+        } else {
+          state.authSuccess = false;
+          Cookies.set('token', '');
+        }
       })
       .addCase(login.rejected, (status) => {
         status.status = STATUSES.ERROR;
@@ -32,9 +35,13 @@ const userSlice = createSlice({
       .addCase(signup.fulfilled, (state, action) => {
         state.status = STATUSES.IDLE;
         state.user = action.payload;
-        !action.payload.errors
-          ? Cookies.set('token', action.payload.data.token)
-          : Cookies.set('token', '');
+        if (!action.payload.errors) {
+          Cookies.set('token', action.payload.data.token);
+          state.authSuccess = true;
+        } else {
+          state.authSuccess = false;
+          Cookies.set('token', '');
+        }
       })
       .addCase(signup.rejected, (state) => {
         state.status = STATUSES.ERROR;
