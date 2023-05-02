@@ -45,3 +45,10 @@ export const BudgetSchema = Yup.object().shape({
       'End date cannot be in a future month'
     ),
 });
+export const AuthSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('Required'),
+  password: Yup.string()
+    .min(2, 'Too Short!')
+    .max(20, 'Too Long!')
+    .required('Required'),
+});

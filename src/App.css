@@ -58,3 +58,38 @@
 .margin-bottom-3 {
   margin-bottom: 20px;
 }
+
+.login-background {
+  background-color: rgb(148, 148, 148);
+}
+
+.register-background {
+  background-color: rgb(196, 196, 196);
+}
+
+.z-index-1 {
+  z-index: 1;
+}
+
+.z-index-2 {
+  z-index: 2;
+}
+
+.z-index-3 {
+  z-index: 3;
+}
+
+.opacity-8 {
+  opacity: 0.8;
+}
+
+.object-fit-fill {
+  object-fit: fill;
+  width: 100%;
+  height: 100%;
+}
+
+.auth-switch-container {
+  background-color: rgb(140, 0, 14);
+  transform: rotate(-90deg);
+}
