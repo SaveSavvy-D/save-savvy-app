@@ -3,7 +3,11 @@ import { useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { BudgetSchema } from '../../../utils/yup/schemas';
-import { updateBudget, createBudget } from '../../../store/budgetSlice';
+import {
+  updateBudget,
+  createBudget,
+  deleteBudget,
+} from '../../../store/budgetSlice';
 import '../../../App.css';
 
 export const BudgetForm = ({
@@ -35,6 +39,11 @@ export const BudgetForm = ({
         newData: payload,
       })
     );
+  };
+
+  const handleDeleteBudget = () => {
+    dispatch(deleteBudget({ id: budget?._id }));
+    window.location.reload();
   };
 
   return (
@@ -148,6 +157,14 @@ export const BudgetForm = ({
               </Button>
               <Button variant="primary" type="submit" disabled={isSubmitting}>
                 {isSubmitting ? 'Saving...' : 'Save Changes'}
+              </Button>
+              <Button
+                variant="danger"
+                disabled={isSubmitting}
+                onClick={handleDeleteBudget}
+                type="submit"
+              >
+                {isSubmitting ? 'Deleting...' : 'Delete'}
               </Button>
             </Modal.Footer>
           </Form>

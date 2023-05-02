@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { STATUSES } from '../../../constants/statuses';
@@ -14,21 +14,19 @@ export const BudgetTable = () => {
   const currentPage = useRef(1);
 
   const { data: budgets, status } = useSelector((state) => state.budget);
-  const { data: categories, categoryStatus } = useSelector((state) => state.category);
-
-  useEffect(() => {
-    dispatch(fetchBudgets());
-  }, []);
+  const { data: categories, categoryStatus } = useSelector(
+    (state) => state.category
+  );
 
   const getResults = (pageNum) => {
     currentPage.current = pageNum;
     dispatch(fetchBudgets(pageNum));
   };
 
-  if ((status === STATUSES.LOADING) || (categoryStatus === STATUSES.LOADING) ) {
+  if (status === STATUSES.LOADING || categoryStatus === STATUSES.LOADING) {
     return <AppSpinner />;
   }
-  if ((status === STATUSES.ERROR) || (categoryStatus === STATUSES.ERROR) ) {
+  if (status === STATUSES.ERROR || categoryStatus === STATUSES.ERROR) {
     return <AppAlert variant={'danger'} message="Oops! Something went wrong" />;
   }
 

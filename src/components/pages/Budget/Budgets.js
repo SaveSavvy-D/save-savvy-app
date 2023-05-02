@@ -7,6 +7,7 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { BudgetForm } from './BudgetForm';
 import '../../../App.css';
 import { fetchCategories } from '../../../store/categorySlice';
+import { fetchBudgets } from '../../../store/budgetSlice';
 
 export const Budgets = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export const Budgets = () => {
 
   useEffect(() => {
     dispatch(fetchCategories());
+    dispatch(fetchBudgets());
   }, []);
 
   const handleShowModal = () => {
