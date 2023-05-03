@@ -1,34 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { STATUSES } from '../constants/statuses';
 import { getCookie } from '../utils/cookie';
+import { STATUSES } from '../constants/statuses';
 
 const initialState = {
   data: [],
-  status: STATUSES.IDLE,
+  categoryStatus: STATUSES.IDLE,
+  error: null,
 };
-
-const categorySlice = createSlice({
-  name: 'category',
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchCategories.pending, (state, action) => {
-        state.status = STATUSES.LOADING;
-      })
-      .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.data = action.payload;
-        state.status = STATUSES.IDLE;
-      })
-      .addCase(fetchCategories.rejected, (state, action) => {
-        state.status = STATUSES.ERROR;
-      });
-  },
-});
-
-export default categorySlice.reducer;
-
-//thunks
 
 export const fetchCategories = createAsyncThunk(
   'category/fetchCategories',
@@ -41,8 +19,27 @@ export const fetchCategories = createAsyncThunk(
         Authorization: `Bearer ${token}`,
       },
     });
-    const data = await res.json();
-
-    return data;
+    return await res.json();
   }
 );
+
+const categorySlice = createSlice({
+  name: 'category',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCategories.pending, (state, action) => {
+        state.categoryStatus = STATUSES.LOADING;
+      })
+      .addCase(fetchCategories.fulfilled, (state, action) => {
+        state.data = action.payload?.data?.categories;
+        state.categoryStatus = STATUSES.IDLE;
+      })
+      .addCase(fetchCategories.rejected, (state, action) => {
+        state.categoryStatus = STATUSES.ERROR;
+      });
+  },
+});
+
+export default categorySlice.reducer;

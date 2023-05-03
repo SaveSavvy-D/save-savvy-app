@@ -108,15 +108,14 @@ export const EditExpense = ({
                     name='categoryId'
                     value={values.categoryId}
                     onChange={(e) => {
-                      const selectedCategory =
-                        categories?.data?.categories.find(
-                          (category) => category._id === e.target.value
-                        );
+                      const selectedCategory = categories.find(
+                        (category) => category._id === e.target.value
+                      );
                       setFieldValue('categoryId', selectedCategory._id);
                     }}
                   >
                     <option value=''>Select a category</option>
-                    {categories?.data?.categories?.map((category) => (
+                    {categories.map((category) => (
                       <option key={category._id} value={category._id}>
                         {category.title}
                       </option>

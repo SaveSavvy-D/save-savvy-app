@@ -1,3 +1,7 @@
+* {
+  font-family: 'Arapey';
+}
+
 .margin-right-5 {
   margin-right: 5px;
 }
@@ -8,4 +12,49 @@
 
 .margin-right-100 {
   margin-right: 100px;
+}
+
+.margin-bottom-50 {
+  margin-bottom: 50px;
+}
+
+.page-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.bg-color-green {
+  background-color: #1dbb6f;
+  border: transparent;
+}
+
+.table-text {
+  text-align: center;
+}
+
+.table-navigators {
+  display: flex;
+  justify-content: center;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.spinner {
+  width: 5rem;
+  height: 5rem;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.margin-bottom-3 {
+  margin-bottom: 20px;
 }
