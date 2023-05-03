@@ -3,7 +3,7 @@ import Login from './Login';
 import Register from './Register';
 import BackgroundImg from '../../../images/auth-bg2.jpeg';
 import { useSelector } from 'react-redux';
-import Spinner from '../../common/Spinner';
+import { AppSpinner } from '../../common/AppSpinner';
 
 const Authentication = () => {
   const { status } = useSelector((state) => state.user);
@@ -12,7 +12,7 @@ const Authentication = () => {
     <div>
       {status === 'loading' ? (
         <div>
-          <Spinner />
+          <AppSpinner />
         </div>
       ) : (
         <div className='d-flex justify-content-center align-items-center container-fluid vh-100 w-100 position-relative'>
