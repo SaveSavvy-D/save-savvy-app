@@ -4,6 +4,8 @@ import { AuthSchema } from '../../../utils/yup/schemas';
 import { login, signup } from '../../../store/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const AuthForm = ({ type }) => {
   const navigate = useNavigate();
@@ -30,30 +32,36 @@ const AuthForm = ({ type }) => {
     >
       {({ isSubmitting }) => {
         return (
-          <Form className="d-flex flex-column gap-3 h-full w-100">
-            <div className="h-full w-full">
+          <Form className='d-flex flex-column gap-3 h-full w-100'>
+            <div className='d-flex align-items-center h-full w-full px-3 py-3 rounded border w-100 bg-light'>
+              <FontAwesomeIcon icon={faEnvelope} />
               <Field
-                type="email"
-                name="email"
-                placeholder="Email"
-                className="px-3 py-3 rounded border w-100 bg-light"
+                type='email'
+                name='email'
+                placeholder='Email'
+                className='border border-0 bg-transparent w-100 mx-2 input'
               />
-              <ErrorMessage name="email" />
             </div>
-            <div>
+            <ErrorMessage name='email' />
+
+            <div className='d-flex align-items-center h-full w-full px-3 py-3 rounded border w-100 bg-light'>
+              <FontAwesomeIcon icon={faEnvelope} />
               <Field
-                type="password"
-                name="password"
-                placeholder="Password"
-                className="px-3 py-3 rounded border  w-100 bg-light"
+                type='password'
+                name='password'
+                placeholder='Password'
+                className='border border-0 bg-transparent w-100 mx-2 input'
               />
-              <ErrorMessage name="password" />
             </div>
-            <div className="d-flex justify-content-center w-100">
+            <ErrorMessage name='password' />
+
+            <div className='d-flex justify-content-center w-100'>
               <button
-                type="submit"
+                type='submit'
                 disabled={isSubmitting}
-                className="bg-success text-white rounded border border-2 py-2 px-5 w-100"
+                className={`${
+                  type === 'LOGIN' ? 'bg-info' : 'bg-success'
+                } text-white rounded border border-0 py-2 px-5 w-100 mt-2`}
               >
                 {type}
               </button>

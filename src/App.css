@@ -93,3 +93,7 @@
   background-color: rgb(140, 0, 14);
   transform: rotate(-90deg);
 }
+
+input:focus {
+  outline: none;
+}
