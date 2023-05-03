@@ -10,7 +10,6 @@ const AuthForm = ({ type }) => {
   const dispatch = useDispatch();
   const { authSuccess } = useSelector((state) => state.user);
   useEffect(() => {
-    console.log('In use Effect');
     if (authSuccess) navigate('/');
   }, [authSuccess]);
 

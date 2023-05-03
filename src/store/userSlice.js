@@ -26,8 +26,8 @@ const userSlice = createSlice({
           Cookies.set('token', '');
         }
       })
-      .addCase(login.rejected, (status) => {
-        status.status = STATUSES.ERROR;
+      .addCase(login.rejected, (state) => {
+        state.status = STATUSES.ERROR;
       })
       .addCase(signup.pending, (state) => {
         state.status = STATUSES.LOADING;
