@@ -1,38 +1,35 @@
 import { useRef } from 'react';
 import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
+import { Container, Button } from 'react-bootstrap';
+
 import { STATUSES } from '../../../constants/statuses';
 import { fetchBudgets } from '../../../store/budgetSlice';
-import { Container, Button } from 'react-bootstrap';
 import { Budget } from './Budget';
 import { AppSpinner } from '../../common/AppSpinner';
 import { AppAlert } from '../../common/AppAlert';
-import '../../../App.css';
 
 export const BudgetTable = () => {
   const dispatch = useDispatch();
   const currentPage = useRef(1);
 
-  const { data: budgets, status } = useSelector((state) => state.budget);
-  const { data: categories, categoryStatus } = useSelector(
-    (state) => state.category
-  );
+  const { data, status } = useSelector((state) => state.budget);
 
   const getResults = (pageNum) => {
     currentPage.current = pageNum;
     dispatch(fetchBudgets(pageNum));
   };
 
-  if (status === STATUSES.LOADING || categoryStatus === STATUSES.LOADING) {
+  if (status === STATUSES.LOADING) {
     return <AppSpinner />;
   }
-  if (status === STATUSES.ERROR || categoryStatus === STATUSES.ERROR) {
-    return <AppAlert variant={'danger'} message="Oops! Something went wrong" />;
+  if (status === STATUSES.ERROR) {
+    return <AppAlert variant={'danger'} message='Oops! Something went wrong' />;
   }
 
   return (
     <>
-      <Table className="table-text" striped bordered hover>
+      <Table className='table-text' striped bordered hover>
         <thead>
           <tr>
             <th>#</th>
@@ -44,35 +41,34 @@ export const BudgetTable = () => {
           </tr>
         </thead>
         <tbody>
-          {budgets?.data?.budgets?.length ? (
-            budgets?.data?.budgets.map((budget, index) => (
+          {data?.budgets?.length ? (
+            data?.budgets.map((budget, index) => (
               <Budget
                 key={budget?._id}
                 index={index}
                 budget={budget}
                 currentPage={currentPage}
-                categories={categories?.data?.categories}
               />
             ))
           ) : (
             <tr>
-              <td colSpan="5">There are no items to display</td>
+              <td colSpan='5'>There are no items to display</td>
             </tr>
           )}
         </tbody>
       </Table>
-      <Container className="table-navigators">
+      <Container className='table-navigators'>
         {currentPage.current > 1 && (
           <Button
             onClick={() => getResults(currentPage.current - 1)}
-            variant="link"
+            variant='link'
           >
             Previous
           </Button>
         )}
-        {budgets?.data?.remainingRecords > 0 && (
+        {data?.remainingRecords > 0 && (
           <Button
-            variant="link"
+            variant='link'
             onClick={() => getResults(currentPage.current + 1)}
           >
             Next

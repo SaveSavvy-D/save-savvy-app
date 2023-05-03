@@ -1,8 +1,9 @@
 import { Modal, Button } from 'react-bootstrap';
 import React, { useState } from 'react';
+
 import { BudgetForm } from './BudgetForm';
 
-export const Budget = ({ index, budget, currentPage, categories }) => {
+export const Budget = ({ index, budget, currentPage }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => {
@@ -22,7 +23,7 @@ export const Budget = ({ index, budget, currentPage, categories }) => {
         <td>{budget?.startDate.substring(0, 10)}</td>
         <td>{budget?.endDate.substring(0, 10)}</td>
         <td>
-          <Button variant="link" onClick={handleShowModal}>
+          <Button variant='link' onClick={handleShowModal}>
             View
           </Button>
         </td>
@@ -30,13 +31,12 @@ export const Budget = ({ index, budget, currentPage, categories }) => {
       <Modal
         show={showModal}
         onHide={() => handleCloseModal()}
-        backdrop="static"
+        backdrop='static'
       >
         <BudgetForm
           budget={budget}
           showModal={handleShowModal}
           handleCloseModal={handleCloseModal}
-          categories={categories}
           create={false}
         />
       </Modal>

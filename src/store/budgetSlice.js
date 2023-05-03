@@ -5,17 +5,14 @@ import { STATUSES } from '../constants/statuses';
 const initialState = {
   data: [],
   status: STATUSES.IDLE,
+  error: null,
 };
 
 export const fetchBudgets = createAsyncThunk(
   'budget/fetchBudgets',
   async (pageNum = 1) => {
     const queryParams = new URLSearchParams({ page: pageNum });
-
-    const token =
-      getCookie('token') ||
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOnsiX2lkIjoiNjQyZmY0MjdhYTNhYmY0NzVhM2QzOTBhIiwiZW1haWwiOiJoYXJvb24ub21lckBkZXZzaW5jLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEyJFpUZ0tvbmJuUUFtOHdnU3Y5eGJ1WE9iSjcubXd6TWZ1ck52bXhmckgybkt0UHdFY2g4Mm4uIiwiX192IjowfSwiaWF0IjoxNjgzMDAzNDk0LCJleHAiOjE2ODMwMzk0OTR9.hUG_W3b5sdTlPAtdW4TrGlvvEyWE6MLYWWd1Vkq0QxI';
-
+    const token = getCookie('token') || process.env.REACT_APP_AUTH_TOKEN;
     const res = await fetch(
       `${process.env.REACT_APP_BASE_URL}/budgets/my?${queryParams}`,
       {
@@ -26,18 +23,14 @@ export const fetchBudgets = createAsyncThunk(
         },
       }
     );
-    const data = await res.json();
-    return data;
+    return await res.json();
   }
 );
 
 export const createBudget = createAsyncThunk(
   'budget/createBudget',
   async ({ newData }) => {
-    const token =
-      getCookie('token') ||
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOnsiX2lkIjoiNjQyZmY0MjdhYTNhYmY0NzVhM2QzOTBhIiwiZW1haWwiOiJoYXJvb24ub21lckBkZXZzaW5jLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEyJFpUZ0tvbmJuUUFtOHdnU3Y5eGJ1WE9iSjcubXd6TWZ1ck52bXhmckgybkt0UHdFY2g4Mm4uIiwiX192IjowfSwiaWF0IjoxNjgzMDAzNDk0LCJleHAiOjE2ODMwMzk0OTR9.hUG_W3b5sdTlPAtdW4TrGlvvEyWE6MLYWWd1Vkq0QxI';
-
+    const token = getCookie('token') || process.env.REACT_APP_AUTH_TOKEN;
     const res = await fetch(`${process.env.REACT_APP_BASE_URL}/budgets/`, {
       method: 'POST',
       headers: {
@@ -47,18 +40,14 @@ export const createBudget = createAsyncThunk(
       body: JSON.stringify(newData),
     });
 
-    const data = await res.json();
-    return data;
+    return await res.json();
   }
 );
 
 export const updateBudget = createAsyncThunk(
   'budget/updateBudget',
   async ({ id, newData }) => {
-    const token =
-      getCookie('token') ||
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOnsiX2lkIjoiNjQyZmY0MjdhYTNhYmY0NzVhM2QzOTBhIiwiZW1haWwiOiJoYXJvb24ub21lckBkZXZzaW5jLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEyJFpUZ0tvbmJuUUFtOHdnU3Y5eGJ1WE9iSjcubXd6TWZ1ck52bXhmckgybkt0UHdFY2g4Mm4uIiwiX192IjowfSwiaWF0IjoxNjgzMDAzNDk0LCJleHAiOjE2ODMwMzk0OTR9.hUG_W3b5sdTlPAtdW4TrGlvvEyWE6MLYWWd1Vkq0QxI';
-
+    const token = getCookie('token') || process.env.REACT_APP_AUTH_TOKEN;
     const res = await fetch(`${process.env.REACT_APP_BASE_URL}/budgets/${id}`, {
       method: 'PUT',
       headers: {
@@ -68,18 +57,14 @@ export const updateBudget = createAsyncThunk(
       body: JSON.stringify(newData),
     });
 
-    const data = await res.json();
-    return data;
+    return await res.json();
   }
 );
 
 export const deleteBudget = createAsyncThunk(
   'budget/deleteBudget',
   async ({ id }) => {
-    const token =
-      getCookie('token') ||
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOnsiX2lkIjoiNjQyZmY0MjdhYTNhYmY0NzVhM2QzOTBhIiwiZW1haWwiOiJoYXJvb24ub21lckBkZXZzaW5jLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEyJFpUZ0tvbmJuUUFtOHdnU3Y5eGJ1WE9iSjcubXd6TWZ1ck52bXhmckgybkt0UHdFY2g4Mm4uIiwiX192IjowfSwiaWF0IjoxNjgzMDAzNDk0LCJleHAiOjE2ODMwMzk0OTR9.hUG_W3b5sdTlPAtdW4TrGlvvEyWE6MLYWWd1Vkq0QxI';
-
+    const token = getCookie('token') || process.env.REACT_APP_AUTH_TOKEN;
     const res = await fetch(`${process.env.REACT_APP_BASE_URL}/budgets/${id}`, {
       method: 'DELETE',
       headers: {
@@ -88,8 +73,7 @@ export const deleteBudget = createAsyncThunk(
       },
     });
 
-    const data = await res.json();
-    return data;
+    return await res.json();
   }
 );
 
@@ -103,7 +87,7 @@ const budgetSlice = createSlice({
         state.status = STATUSES.LOADING;
       })
       .addCase(fetchBudgets.fulfilled, (state, action) => {
-        state.data = action.payload;
+        state.data = action.payload?.data;
         state.status = STATUSES.IDLE;
       })
       .addCase(fetchBudgets.rejected, (state, action) => {

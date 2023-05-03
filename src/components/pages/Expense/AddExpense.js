@@ -7,7 +7,6 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { createExpense } from '../../../store/expenseSlice';
 import { ExpenseSchema } from '../../../utils/schema';
 import { fetchCategories } from '../../../store/categorySlice';
-import { showNotification } from '../../../utils/notificationHelper';
 
 export const AddExpense = ({ showModal, handleClose }) => {
   const dispatch = useDispatch();
@@ -89,14 +88,14 @@ export const AddExpense = ({ showModal, handleClose }) => {
                   name='categoryId'
                   value={values.categoryId}
                   onChange={(e) => {
-                    const selectedCategory = categories?.data?.categories.find(
+                    const selectedCategory = categories.find(
                       (category) => category._id === e.target.value
                     );
                     setFieldValue('categoryId', selectedCategory._id);
                   }}
                 >
                   <option value=''>Select a category</option>
-                  {categories?.data?.categories?.map((category) => (
+                  {categories.map((category) => (
                     <option key={category._id} value={category._id}>
                       {category.title}
                     </option>
