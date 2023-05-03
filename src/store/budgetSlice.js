@@ -18,7 +18,7 @@ export const fetchBudgets = createAsyncThunk(
   'budget/fetchBudgets',
   async (pageNum = 1) => {
     const queryParams = new URLSearchParams({ page: pageNum });
-    const token = getCookie('token') || process.env.REACT_APP_AUTH_TOKEN;
+    const token = getCookie('token');
     const res = await fetch(
       `${process.env.REACT_APP_BASE_URL}/budgets/my?${queryParams}`,
       {
@@ -36,7 +36,7 @@ export const fetchBudgets = createAsyncThunk(
 export const createBudget = createAsyncThunk(
   'budget/createBudget',
   async ({ newData }) => {
-    const token = getCookie('token') || process.env.REACT_APP_AUTH_TOKEN;
+    const token = getCookie('token');
     const res = await fetch(`${process.env.REACT_APP_BASE_URL}/budgets/`, {
       method: 'POST',
       headers: {
@@ -53,7 +53,7 @@ export const createBudget = createAsyncThunk(
 export const updateBudget = createAsyncThunk(
   'budget/updateBudget',
   async ({ id, newData }) => {
-    const token = getCookie('token') || process.env.REACT_APP_AUTH_TOKEN;
+    const token = getCookie('token');
     const res = await fetch(`${process.env.REACT_APP_BASE_URL}/budgets/${id}`, {
       method: 'PUT',
       headers: {
@@ -70,7 +70,7 @@ export const updateBudget = createAsyncThunk(
 export const deleteBudget = createAsyncThunk(
   'budget/deleteBudget',
   async ({ id }) => {
-    const token = getCookie('token') || process.env.REACT_APP_AUTH_TOKEN;
+    const token = getCookie('token');
     const res = await fetch(`${process.env.REACT_APP_BASE_URL}/budgets/${id}`, {
       method: 'DELETE',
       headers: {
