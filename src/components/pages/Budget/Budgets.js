@@ -12,6 +12,7 @@ import { fetchBudgets } from '../../../store/budgetSlice';
 export const Budgets = () => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -50,9 +51,10 @@ export const Budgets = () => {
           showModal={handleShowModal}
           handleCloseModal={handleCloseModal}
           create={true}
+          setCurrentPage={setCurrentPage}
         />
       </Modal>
-      <BudgetTable />
+      <BudgetTable currentPage={currentPage} setCurrentPage={setCurrentPage} />
     </Container>
   );
 };

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import { BudgetForm } from './BudgetForm';
 
-export const Budget = ({ index, budget, currentPage }) => {
+export const Budget = ({ index, budget, currentPage, setCurrentPage }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => {
@@ -17,7 +17,7 @@ export const Budget = ({ index, budget, currentPage }) => {
   return (
     <>
       <tr>
-        <td>{index + 1 + (currentPage.current - 1) * 5}</td>
+        <td>{index + 1 + (currentPage - 1) * 5}</td>
         <td>{budget?.categoryId.title}</td>
         <td>{budget?.threshold}</td>
         <td>{budget?.startDate.substring(0, 10)}</td>
@@ -38,6 +38,7 @@ export const Budget = ({ index, budget, currentPage }) => {
           showModal={handleShowModal}
           handleCloseModal={handleCloseModal}
           create={false}
+          setCurrentPage={setCurrentPage}
         />
       </Modal>
     </>

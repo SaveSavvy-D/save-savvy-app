@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Button } from 'react-bootstrap';
@@ -7,16 +6,16 @@ import { STATUSES } from '../../../constants/statuses';
 import { fetchBudgets } from '../../../store/budgetSlice';
 import { Budget } from './Budget';
 import { AppSpinner } from '../../common/AppSpinner';
-import { AppAlert } from '../../common/AppAlert';
+import { showAllNotifications } from '../../../utils/notificationHelper';
+import ToastColors from '../../../constants/toastColors';
 
-export const BudgetTable = () => {
+export const BudgetTable = ({ currentPage, setCurrentPage }) => {
   const dispatch = useDispatch();
-  const currentPage = useRef(1);
 
-  const { data, status } = useSelector((state) => state.budget);
+  const { data, status, errors } = useSelector((state) => state.budget);
 
   const getResults = (pageNum) => {
-    currentPage.current = pageNum;
+    setCurrentPage(pageNum);
     dispatch(fetchBudgets(pageNum));
   };
 
@@ -24,7 +23,8 @@ export const BudgetTable = () => {
     return <AppSpinner />;
   }
   if (status === STATUSES.ERROR) {
-    return <AppAlert variant={'danger'} message='Oops! Something went wrong' />;
+    const errorArray = errors.map((error) => error.msg);
+    showAllNotifications(errorArray, ToastColors.error);
   }
 
   return (
@@ -48,29 +48,26 @@ export const BudgetTable = () => {
                 index={index}
                 budget={budget}
                 currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
               />
             ))
-          ) : (
+          ) : data !== null ? (
             <tr>
               <td colSpan='5'>There are no items to display</td>
             </tr>
+          ) : (
+            false
           )}
         </tbody>
       </Table>
       <Container className='table-navigators'>
-        {currentPage.current > 1 && (
-          <Button
-            onClick={() => getResults(currentPage.current - 1)}
-            variant='link'
-          >
+        {currentPage > 1 && (
+          <Button onClick={() => getResults(currentPage - 1)} variant='link'>
             Previous
           </Button>
         )}
         {data?.remainingRecords > 0 && (
-          <Button
-            variant='link'
-            onClick={() => getResults(currentPage.current + 1)}
-          >
+          <Button variant='link' onClick={() => getResults(currentPage + 1)}>
             Next
           </Button>
         )}

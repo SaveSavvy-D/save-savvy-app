@@ -11,9 +11,15 @@ import {
   updateBudget,
   createBudget,
   deleteBudget,
+  fetchBudgets,
 } from '../../../store/budgetSlice';
 
-export const BudgetForm = ({ budget, handleCloseModal, create }) => {
+export const BudgetForm = ({
+  budget,
+  handleCloseModal,
+  create,
+  setCurrentPage,
+}) => {
   const dispatch = useDispatch();
 
   const { data: categories, categoryStatus } = useSelector(
@@ -28,31 +34,40 @@ export const BudgetForm = ({ budget, handleCloseModal, create }) => {
   }
 
   const createPayload = (values) => {
-    const categoryId = categories.filter(
+    const categoryId = categories?.filter(
       (category) => category.title === values.categoryTitle
     );
 
     return { ...values, categoryId: categoryId[0]._id };
   };
 
-  const handleCreateBudget = (values) => {
+  const handleCreateBudget = async (values) => {
     const payload = createPayload(values);
-    dispatch(createBudget({ newData: payload }));
+    await dispatch(
+      createBudget({
+        newData: payload,
+      })
+    );
+    setCurrentPage(1);
+    dispatch(fetchBudgets());
   };
 
-  const handleUpdateBudget = (values) => {
+  const handleUpdateBudget = async (values) => {
     const payload = createPayload(values);
-    dispatch(
+    await dispatch(
       updateBudget({
         id: budget?._id,
         newData: payload,
       })
     );
+    setCurrentPage(1);
+    dispatch(fetchBudgets());
   };
 
-  const handleDeleteBudget = () => {
-    dispatch(deleteBudget({ id: budget?._id }));
-    window.location.reload();
+  const handleDeleteBudget = async () => {
+    await dispatch(deleteBudget({ id: budget?._id }));
+    setCurrentPage(1);
+    dispatch(fetchBudgets());
   };
 
   return (
@@ -76,7 +91,6 @@ export const BudgetForm = ({ budget, handleCloseModal, create }) => {
           }
           setSubmitting(false);
           handleCloseModal();
-          window.location.reload();
         }}
       >
         {({
@@ -104,7 +118,7 @@ export const BudgetForm = ({ budget, handleCloseModal, create }) => {
                     {values.categoryTitle || 'Select a category title'}
                   </option>
                   {categories
-                    .filter(
+                    ?.filter(
                       (category) => category.title !== values.categoryTitle
                     )
                     .map((category) => (
@@ -167,14 +181,15 @@ export const BudgetForm = ({ budget, handleCloseModal, create }) => {
               <Button variant='primary' type='submit' disabled={isSubmitting}>
                 {isSubmitting ? 'Saving...' : 'Save Changes'}
               </Button>
-              <Button
-                variant='danger'
-                disabled={isSubmitting}
-                onClick={handleDeleteBudget}
-                type='submit'
-              >
-                {isSubmitting ? 'Deleting...' : 'Delete'}
-              </Button>
+              {!create && (
+                <Button
+                  variant='danger'
+                  disabled={isSubmitting}
+                  onClick={handleDeleteBudget}
+                >
+                  {isSubmitting ? 'Deleting...' : 'Delete'}
+                </Button>
+              )}
             </Modal.Footer>
           </Form>
         )}

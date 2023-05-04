@@ -1,5 +1,5 @@
-import { toast } from "react-toastify";
-import ToastColors from "../constants/toastColors";
+import { toast } from 'react-toastify';
+import ToastColors from '../constants/toastColors';
 
 export const showNotification = (
   message,
@@ -7,7 +7,7 @@ export const showNotification = (
   id = undefined
 ) => {
   toast(message, {
-    position: "top-right",
+    position: 'top-right',
     autoClose: 3000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -16,6 +16,12 @@ export const showNotification = (
     type,
     toastId: id,
     progress: undefined,
-    theme: "colored",
+    theme: 'colored',
   });
+};
+
+export const showAllNotifications = (notifications, type, id = undefined) => {
+  let messages = Array.isArray(notifications) ? notifications : [notifications];
+
+  messages.forEach((notification) => showNotification(notification, type, id));
 };

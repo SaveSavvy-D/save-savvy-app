@@ -1,11 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
 import { getCookie } from '../utils/cookie';
 import { STATUSES } from '../constants/statuses';
+import {
+  modifyStateHelper,
+  fetchStateHelper,
+  rejectStateHelper,
+} from '../utils/reduxStateHelper';
 
 const initialState = {
   data: [],
   status: STATUSES.IDLE,
-  error: null,
+  errors: [],
 };
 
 export const fetchBudgets = createAsyncThunk(
@@ -87,43 +93,37 @@ const budgetSlice = createSlice({
         state.status = STATUSES.LOADING;
       })
       .addCase(fetchBudgets.fulfilled, (state, action) => {
-        state.data = action.payload?.data;
-        state.status = STATUSES.IDLE;
+        fetchStateHelper(state, action.payload);
       })
       .addCase(fetchBudgets.rejected, (state, action) => {
-        state.status = STATUSES.ERROR;
+        rejectStateHelper(state);
       })
       .addCase(createBudget.pending, (state, action) => {
         state.status = STATUSES.LOADING;
       })
       .addCase(createBudget.fulfilled, (state, action) => {
-        state.data?.data?.budgets?.push(action.payload?.data?.budget);
-        state.status = STATUSES.IDLE;
+        modifyStateHelper(state, action.payload);
       })
       .addCase(createBudget.rejected, (state, action) => {
-        state.status = STATUSES.ERROR;
-        state.error = action.payload;
+        rejectStateHelper(state);
       })
       .addCase(updateBudget.pending, (state, action) => {
         state.status = STATUSES.LOADING;
       })
       .addCase(updateBudget.fulfilled, (state, action) => {
-        state.data = action.payload;
-        state.status = STATUSES.IDLE;
+        modifyStateHelper(state, action.payload);
       })
       .addCase(updateBudget.rejected, (state, action) => {
-        state.status = STATUSES.ERROR;
+        rejectStateHelper(state);
       })
       .addCase(deleteBudget.pending, (state, action) => {
         state.status = STATUSES.LOADING;
       })
       .addCase(deleteBudget.fulfilled, (state, action) => {
-        state.data = action.payload;
-        state.status = STATUSES.IDLE;
+        modifyStateHelper(state, action.payload);
       })
       .addCase(deleteBudget.rejected, (state, action) => {
-        state.status = STATUSES.ERROR;
-        state.error = action.payload;
+        rejectStateHelper(state);
       });
   },
 });
