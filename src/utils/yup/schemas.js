@@ -46,11 +46,11 @@ export const BudgetSchema = Yup.object().shape({
     ),
 });
 export const AuthSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Required'),
+  email: Yup.string().email('Invalid email').required('Email required'),
   password: Yup.string()
     .min(2, 'Too Short!')
     .max(20, 'Too Long!')
-    .required('Required'),
+    .required('Password required'),
 });
 
 export const ExpenseSchema = Yup.object().shape({

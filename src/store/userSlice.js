@@ -5,6 +5,7 @@ const initialState = {
   user: '',
   status: STATUSES.IDLE,
   authSuccess: false,
+  authErrors: [],
 };
 const userSlice = createSlice({
   name: 'user',
@@ -23,11 +24,13 @@ const userSlice = createSlice({
           state.authSuccess = true;
         } else {
           state.authSuccess = false;
+          state.authErrors = action.payload.errors;
           Cookies.set('token', '');
         }
       })
-      .addCase(login.rejected, (state) => {
+      .addCase(login.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
+        state.authErrors = action.payload;
       })
       .addCase(signup.pending, (state) => {
         state.status = STATUSES.LOADING;
@@ -40,10 +43,11 @@ const userSlice = createSlice({
           state.authSuccess = true;
         } else {
           state.authSuccess = false;
+          state.authErrors = action.payload.errors;
           Cookies.set('token', '');
         }
       })
-      .addCase(signup.rejected, (state) => {
+      .addCase(signup.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
       });
   },

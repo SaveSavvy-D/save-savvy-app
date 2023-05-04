@@ -4,7 +4,7 @@ import Register from './Register';
 import BackgroundImg from '../../../images/auth-bg2.jpeg';
 import { useSelector } from 'react-redux';
 import { AppSpinner } from '../../common/AppSpinner';
-import Applogo from '../../../images/appLogo.png';
+import Applogo from '../../../images/appLogo3.png';
 
 const Authentication = () => {
   const { status } = useSelector((state) => state.user);
@@ -33,7 +33,7 @@ const Authentication = () => {
                   <Register />
                 </div>
                 <div className='d-flex flex-column justify-content-center align-items-center col-5 bg-success bg-opacity-50'>
-                  <img src={Applogo} alt='' className='col-3 pb-5' />
+                  <img src={Applogo} alt='' className='col-4 pb-5' />
                   <p className='text-center text-white fs-4 w-100'>
                     Already have an account?
                   </p>
@@ -48,7 +48,7 @@ const Authentication = () => {
             ) : (
               <div className='d-flex w-100'>
                 <div className='d-flex flex-column justify-content-center align-items-center col-5 bg-info bg-opacity-50'>
-                  <img src={Applogo} alt='' className='col-3 pb-5' />
+                  <img src={Applogo} alt='' className='col-4 pb-5' />
                   <p className='text-center text-white fs-4 w-100 pt-2'>
                     Don't have an account?
                   </p>

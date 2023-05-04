@@ -10,10 +10,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const AuthForm = ({ type }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { authSuccess } = useSelector((state) => state.user);
+  const { authSuccess, authErrors } = useSelector((state) => state.user);
   useEffect(() => {
     if (authSuccess) navigate('/');
-  }, [authSuccess]);
+    if (authErrors) console.log(authErrors);
+  }, [authSuccess, authErrors]);
 
   const onSubmit = (creds, { setSubmitting, resetForm }) => {
     type === 'LOGIN' ? dispatch(login(creds)) : dispatch(signup(creds));
@@ -33,6 +34,11 @@ const AuthForm = ({ type }) => {
       {({ isSubmitting }) => {
         return (
           <Form className='d-flex flex-column gap-3 h-full w-100'>
+            <ErrorMessage
+              name='email'
+              className='text-danger'
+              component='div'
+            />
             <div className='d-flex align-items-center h-full w-full px-3 py-3 rounded border w-100 bg-light'>
               <FontAwesomeIcon icon={faEnvelope} />
               <Field
@@ -42,10 +48,15 @@ const AuthForm = ({ type }) => {
                 className='border border-0 bg-transparent w-100 mx-2 input'
               />
             </div>
-            <ErrorMessage name='email' />
+
+            <ErrorMessage
+              name='password'
+              className='text-danger'
+              component='div'
+            />
 
             <div className='d-flex align-items-center h-full w-full px-3 py-3 rounded border w-100 bg-light'>
-              <FontAwesomeIcon icon={faEnvelope} />
+              <FontAwesomeIcon icon={faLock} />
               <Field
                 type='password'
                 name='password'
@@ -53,7 +64,6 @@ const AuthForm = ({ type }) => {
                 className='border border-0 bg-transparent w-100 mx-2 input'
               />
             </div>
-            <ErrorMessage name='password' />
 
             <div className='d-flex justify-content-center w-100'>
               <button
