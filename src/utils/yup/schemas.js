@@ -14,7 +14,7 @@ export const BudgetSchema = Yup.object().shape({
     .max(
       new Date(
         new Date().getFullYear(),
-        new Date().getMonth(),
+        new Date().getMonth() + 1,
         new Date().getDate()
       ),
       'Start date cannot be in a future month'

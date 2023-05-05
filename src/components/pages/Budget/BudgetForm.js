@@ -4,55 +4,60 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { Formik } from 'formik';
 
 import { BudgetSchema } from '../../../utils/yup/schemas';
-import { STATUSES } from '../../../constants/statuses';
-import { AppSpinner } from '../../common/AppSpinner';
-import AppAlert from '../../common/AppAlert';
 import {
   updateBudget,
   createBudget,
   deleteBudget,
+  fetchBudgets,
 } from '../../../store/budgetSlice';
 
-export const BudgetForm = ({ budget, handleCloseModal, create }) => {
+export const BudgetForm = ({
+  budget,
+  handleCloseModal,
+  create,
+  setCurrentPage,
+}) => {
   const dispatch = useDispatch();
 
-  const { data: categories, categoryStatus } = useSelector(
-    (state) => state.category
-  );
+  const { data } = useSelector((state) => state.category);
 
-  if (categoryStatus === STATUSES.LOADING) {
-    return <AppSpinner />;
-  }
-  if (categoryStatus === STATUSES.ERROR) {
-    return <AppAlert variant={'danger'} message='Oops! Something went wrong' />;
-  }
+  const resetTable = () => {
+    setCurrentPage(1);
+    dispatch(fetchBudgets());
+  };
 
   const createPayload = (values) => {
-    const categoryId = categories.filter(
+    const categoryId = data?.categories?.filter(
       (category) => category.title === values.categoryTitle
     );
 
     return { ...values, categoryId: categoryId[0]._id };
   };
 
-  const handleCreateBudget = (values) => {
+  const handleCreateBudget = async (values) => {
     const payload = createPayload(values);
-    dispatch(createBudget({ newData: payload }));
+    await dispatch(
+      createBudget({
+        newData: payload,
+      })
+    );
+    resetTable();
   };
 
-  const handleUpdateBudget = (values) => {
+  const handleUpdateBudget = async (values) => {
     const payload = createPayload(values);
-    dispatch(
+    await dispatch(
       updateBudget({
         id: budget?._id,
         newData: payload,
       })
     );
+    resetTable();
   };
 
-  const handleDeleteBudget = () => {
-    dispatch(deleteBudget({ id: budget?._id }));
-    window.location.reload();
+  const handleDeleteBudget = async () => {
+    await dispatch(deleteBudget({ id: budget?._id }));
+    resetTable();
   };
 
   return (
@@ -76,7 +81,6 @@ export const BudgetForm = ({ budget, handleCloseModal, create }) => {
           }
           setSubmitting(false);
           handleCloseModal();
-          window.location.reload();
         }}
       >
         {({
@@ -103,8 +107,8 @@ export const BudgetForm = ({ budget, handleCloseModal, create }) => {
                   <option value={values.categoryTitle || ''}>
                     {values.categoryTitle || 'Select a category title'}
                   </option>
-                  {categories
-                    .filter(
+                  {data?.categories
+                    ?.filter(
                       (category) => category.title !== values.categoryTitle
                     )
                     .map((category) => (
@@ -167,14 +171,15 @@ export const BudgetForm = ({ budget, handleCloseModal, create }) => {
               <Button variant='primary' type='submit' disabled={isSubmitting}>
                 {isSubmitting ? 'Saving...' : 'Save Changes'}
               </Button>
-              <Button
-                variant='danger'
-                disabled={isSubmitting}
-                onClick={handleDeleteBudget}
-                type='submit'
-              >
-                {isSubmitting ? 'Deleting...' : 'Delete'}
-              </Button>
+              {!create && (
+                <Button
+                  variant='danger'
+                  disabled={isSubmitting}
+                  onClick={handleDeleteBudget}
+                >
+                  {isSubmitting ? 'Deleting...' : 'Delete'}
+                </Button>
+              )}
             </Modal.Footer>
           </Form>
         )}
