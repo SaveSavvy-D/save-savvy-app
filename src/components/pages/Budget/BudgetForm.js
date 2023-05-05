@@ -4,9 +4,6 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { Formik } from 'formik';
 
 import { BudgetSchema } from '../../../utils/yup/schemas';
-import { STATUSES } from '../../../constants/statuses';
-import { AppSpinner } from '../../common/AppSpinner';
-import AppAlert from '../../common/AppAlert';
 import {
   updateBudget,
   createBudget,
@@ -22,16 +19,7 @@ export const BudgetForm = ({
 }) => {
   const dispatch = useDispatch();
 
-  const { data: categories, categoryStatus } = useSelector(
-    (state) => state.category
-  );
-
-  if (categoryStatus === STATUSES.LOADING) {
-    return <AppSpinner />;
-  }
-  if (categoryStatus === STATUSES.ERROR) {
-    return <AppAlert variant={'danger'} message='Oops! Something went wrong' />;
-  }
+  const { data: categories } = useSelector((state) => state.category);
 
   const createPayload = (values) => {
     const categoryId = categories?.filter(

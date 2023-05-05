@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getCookie } from '../utils/cookie';
 import { STATUSES } from '../constants/statuses';
+import { fetchStateHelper, rejectStateHelper } from '../utils/reduxStateHelper';
 
 const initialState = {
   data: [],
-  categoryStatus: STATUSES.IDLE,
-  error: null,
+  status: STATUSES.IDLE,
+  errors: [],
 };
 
 export const fetchCategories = createAsyncThunk(
@@ -30,14 +31,13 @@ const categorySlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchCategories.pending, (state, action) => {
-        state.categoryStatus = STATUSES.LOADING;
+        state.status = STATUSES.LOADING;
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.data = action.payload?.data?.categories;
-        state.categoryStatus = STATUSES.IDLE;
+        fetchStateHelper(state, action.payload);
       })
       .addCase(fetchCategories.rejected, (state, action) => {
-        state.categoryStatus = STATUSES.ERROR;
+        rejectStateHelper(state);
       });
   },
 });

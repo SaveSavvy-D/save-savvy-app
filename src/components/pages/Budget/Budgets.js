@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BudgetTable } from './BudgetTable';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Container, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +8,10 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { BudgetForm } from './BudgetForm';
 import { fetchCategories } from '../../../store/categorySlice';
 import { fetchBudgets } from '../../../store/budgetSlice';
+import { STATUSES } from '../../../constants/statuses';
+import { AppSpinner } from '../../common/AppSpinner';
+import { showAllNotifications } from '../../../utils/notificationHelper';
+import ToastColors from '../../../constants/toastColors';
 
 export const Budgets = () => {
   const dispatch = useDispatch();
@@ -26,6 +30,18 @@ export const Budgets = () => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+  const { status: categoryStatus, errors } = useSelector(
+    (state) => state.category
+  );
+
+  if (categoryStatus === STATUSES.LOADING) {
+    return <AppSpinner />;
+  }
+  if (categoryStatus === STATUSES.ERROR) {
+    const errorArray = errors.map((error) => error.msg);
+    showAllNotifications(errorArray, ToastColors.error);
+  }
 
   return (
     <Container>
