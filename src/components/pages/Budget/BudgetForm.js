@@ -19,10 +19,10 @@ export const BudgetForm = ({
 }) => {
   const dispatch = useDispatch();
 
-  const { data: categories } = useSelector((state) => state.category);
+  const { data } = useSelector((state) => state.category);
 
   const createPayload = (values) => {
-    const categoryId = categories?.filter(
+    const categoryId = data?.categories?.filter(
       (category) => category.title === values.categoryTitle
     );
 
@@ -105,7 +105,7 @@ export const BudgetForm = ({
                   <option value={values.categoryTitle || ''}>
                     {values.categoryTitle || 'Select a category title'}
                   </option>
-                  {categories
+                  {data?.categories
                     ?.filter(
                       (category) => category.title !== values.categoryTitle
                     )
