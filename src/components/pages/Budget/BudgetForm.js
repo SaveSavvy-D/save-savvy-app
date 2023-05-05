@@ -21,6 +21,11 @@ export const BudgetForm = ({
 
   const { data } = useSelector((state) => state.category);
 
+  const resetTable = () => {
+    setCurrentPage(1);
+    dispatch(fetchBudgets());
+  };
+
   const createPayload = (values) => {
     const categoryId = data?.categories?.filter(
       (category) => category.title === values.categoryTitle
@@ -36,8 +41,7 @@ export const BudgetForm = ({
         newData: payload,
       })
     );
-    setCurrentPage(1);
-    dispatch(fetchBudgets());
+    resetTable();
   };
 
   const handleUpdateBudget = async (values) => {
@@ -48,14 +52,12 @@ export const BudgetForm = ({
         newData: payload,
       })
     );
-    setCurrentPage(1);
-    dispatch(fetchBudgets());
+    resetTable();
   };
 
   const handleDeleteBudget = async () => {
     await dispatch(deleteBudget({ id: budget?._id }));
-    setCurrentPage(1);
-    dispatch(fetchBudgets());
+    resetTable();
   };
 
   return (
