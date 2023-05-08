@@ -69,3 +69,10 @@ export const ProfileSchema = Yup.object().shape({
     .length(3, 'Currency code must be three letters long')
     .matches(/^[A-Z]{3}$/, 'Currency code must be uppercase letters'),
 });
+
+export const AlertSchema = Yup.object().shape({
+  title: Yup.string()
+    .required('Title is required')
+    .min(5, 'Title must be of atleast 5 characters'),
+  thresholdPercentage: Yup.string().required('Threshold percentage required'),
+});

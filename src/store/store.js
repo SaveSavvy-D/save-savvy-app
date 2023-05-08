@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import alertReducer from './alertSlice';
 import expenseReducer from './expenseSlice';
 import categoryReducer from './categorySlice';
 import budgetReducer from './budgetSlice';
@@ -7,9 +8,10 @@ import profileReducer from './profileSlice';
 
 const store = configureStore({
   reducer: {
-    expense: expenseReducer,
-    category: categoryReducer,
+    alert: alertReducer,
     budget: budgetReducer,
+    category: categoryReducer,
+    expense: expenseReducer,
     user: userReducer,
     profile: profileReducer,
   },

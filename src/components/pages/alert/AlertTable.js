@@ -1,22 +1,27 @@
-import Table from 'react-bootstrap/Table';
+import React, { useEffect } from 'react';
+import { Button, Container, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, Button } from 'react-bootstrap';
-
+import { useParams } from 'react-router-dom';
 import { STATUSES } from '../../../constants/statuses';
-import { fetchBudgets } from '../../../store/budgetSlice';
-import { Budget } from './Budget';
-import { AppSpinner } from '../../common/AppSpinner';
-import { showAllNotifications } from '../../../utils/notificationHelper';
 import ToastColors from '../../../constants/toastColors';
+import { fetchBudgetAlerts } from '../../../store/alertSlice';
+import { showAllNotifications } from '../../../utils/notificationHelper';
+import { AppSpinner } from '../../common/AppSpinner';
+import { Alert } from './Alert';
 
-export const BudgetTable = ({ currentPage, setCurrentPage }) => {
+export const AlertTable = ({ currentPage, setCurrentPage }) => {
   const dispatch = useDispatch();
+  const { id } = useParams();
 
-  const { data, status, errors } = useSelector((state) => state.budget);
+  const { data, status, errors } = useSelector((state) => state.alert);
+
+  useEffect(() => {
+    dispatch(fetchBudgetAlerts(id));
+  }, [dispatch, id]);
 
   const getResults = (pageNum) => {
     setCurrentPage(pageNum);
-    dispatch(fetchBudgets(pageNum));
+    dispatch(fetchBudgetAlerts(id, pageNum));
   };
 
   if (status === STATUSES.LOADING) {
@@ -33,32 +38,27 @@ export const BudgetTable = ({ currentPage, setCurrentPage }) => {
         <thead>
           <tr>
             <th>#</th>
-            <th>Category</th>
-            <th>Threshold</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Add Alerts</th>
-            <th>View Alerts</th>
+            <th>Title</th>
+            <th>Threshold Limit</th>
+            <th>Date</th>
             <th>Details</th>
           </tr>
         </thead>
         <tbody>
-          {data?.budgets?.length ? (
-            data?.budgets.map((budget, index) => (
-              <Budget
-                key={budget?._id}
+          {data?.alerts?.length ? (
+            data?.alerts?.map((alert, index) => (
+              <Alert
+                key={alert?._id}
+                alert={alert}
                 index={index}
-                budget={budget}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
               />
             ))
-          ) : data !== null ? (
+          ) : (
             <tr>
               <td colSpan='5'>There are no items to display</td>
             </tr>
-          ) : (
-            false
           )}
         </tbody>
       </Table>

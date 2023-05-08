@@ -4,6 +4,8 @@ import { Expenses } from './components/pages/Expense/Expenses';
 import Authentication from './components/pages/authentication/Authentication';
 import { Budgets } from './components/pages/Budget/Budgets';
 import Profile from './components/pages/Profile/Profile';
+import Dashboard from './components/pages/Dashboard/Dashboard';
+import { Alerts } from './components/pages/alert/Alerts';
 
 function App() {
   return (
@@ -16,7 +18,7 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/expenses' element={<Expenses />} />
           <Route path='/budgets' element={<Budgets />} />
-          <Route path='/alerts' element={<h1>Alerts</h1>} />
+          <Route path='/budgets/:id/alerts' element={<Alerts />} />
         </Routes>
       </BrowserRouter>
     </div>
