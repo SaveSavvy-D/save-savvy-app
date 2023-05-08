@@ -12,7 +12,7 @@ const initialState = {
 export const fetchCategories = createAsyncThunk(
   'category/fetchCategories',
   async () => {
-    const token = getCookie('token') || process.env.REACT_APP_AUTH_TOKEN;
+    const token = getCookie('token');
     const res = await fetch(`${process.env.REACT_APP_BASE_URL}/categories/`, {
       method: 'GET',
       headers: {

@@ -1,37 +1,77 @@
-import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
-import { ExpenseTable } from './ExpenseTable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalculator } from '@fortawesome/free-solid-svg-icons';
-import '../../css/tables.css';
-import { AddExpense } from './AddExpense';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from 'react';
+import { Button, Container, Modal } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { ExpenseTable } from './ExpenseTable';
+import { ExpenseForm } from './ExpenseForm';
+import { useEffect } from 'react';
+import { fetchCategories } from '../../../store/categorySlice';
+import { fetchExpenses } from '../../../store/expenseSlice';
+import { AppSpinner } from '../../common/AppSpinner';
+import { showAllNotifications } from '../../../utils/notificationHelper';
+import ToastColors from '../../../constants/toastColors';
+import { STATUSES } from '../../../constants/statuses';
 
 export const Expenses = () => {
   const [expenseModal, setExpenseModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+    dispatch(fetchExpenses());
+  }, []);
 
   const handleClose = () => setExpenseModal(false);
   const handleShow = () => setExpenseModal(true);
+
+  const { status: categoryStatus, errors } = useSelector(
+    (state) => state.category
+  );
+
+  if (categoryStatus === STATUSES.LOADING) {
+    return <AppSpinner />;
+  }
+  if (categoryStatus === STATUSES.ERROR) {
+    const errorArray = errors.map((error) => error.msg);
+    showAllNotifications(errorArray, ToastColors.error);
+  }
+
   return (
     <>
-      <div className='container'>
-        <div className='table-header'>
+      <Container>
+        <div className='page-header-row'>
           <h2>
-            <FontAwesomeIcon
-              icon={faCalculator}
-              flip='horizontal'
-              size='lg'
-              style={{ color: '#1f5122' }}
-            />
+            <FontAwesomeIcon icon={faPenToSquare} className='margin-right-5' />
             Expenses
           </h2>
-          <Button className='add-button' onClick={handleShow}>
-            {' '}
-            + Add expense
+          <Button
+            variant='success'
+            className='bg-color-green'
+            onClick={handleShow}
+          >
+            + Add Expense
           </Button>
         </div>
-      </div>
-      <ExpenseTable />
-      <AddExpense showModal={expenseModal} handleClose={handleClose} />
+        <Modal
+          show={expenseModal}
+          onHide={() => handleClose()}
+          backdrop='static'
+        >
+          <ExpenseForm
+            setCurrentPage={setCurrentPage}
+            showModal={expenseModal}
+            handleCloseModal={handleClose}
+            create={true}
+          />
+        </Modal>
+        <ExpenseTable
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </Container>
     </>
   );
 };

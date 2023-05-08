@@ -1,66 +1,75 @@
-import { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { AppSpinner } from '../../common/AppSpinner';
 import { STATUSES } from '../../../constants/statuses';
 import { fetchExpenses } from '../../../store/expenseSlice';
-import { EditExpense } from './EditExpense';
+import { showAllNotifications } from '../../../utils/notificationHelper';
+import ToastColors from '../../../constants/toastColors';
+import { Expense } from './Expense';
 
-export const ExpenseTable = () => {
+export const ExpenseTable = ({ currentPage, setCurrentPage }) => {
   const dispatch = useDispatch();
-  const [expenseEditModal, setExpenseEditModal] = useState(false);
-  const [singleExpense, setSingleExpense] = useState('');
-  const { data: expenses, status } = useSelector((state) => state.expense);
 
-  useEffect(() => {
-    dispatch(fetchExpenses());
-  }, []);
+  const { data, status, errors } = useSelector((state) => state.expense);
 
-  if (status === STATUSES.LOADING) {
-    return <h2>Loading.....</h2>;
-  }
-  if (status === STATUSES.ERROR) {
-    return <h2>Something went wrong!</h2>;
-  }
-  const handleCloseEdit = () => setExpenseEditModal(false);
-  const handleEdit = (expenseData) => {
-    setSingleExpense(expenseData);
-    setExpenseEditModal(true);
+  const getResults = (pageNum) => {
+    setCurrentPage(pageNum);
+    dispatch(fetchExpenses(pageNum));
   };
 
+  if (status === STATUSES.LOADING) {
+    return <AppSpinner />;
+  }
+  if (status === STATUSES.ERROR) {
+    const errorArray = errors.map((error) => error.msg);
+    showAllNotifications(errorArray, ToastColors.error);
+  }
+
   return (
-    <div className="container">
-      <Table striped bordered hover>
+    <>
+      <Table className='table-text' striped bordered hover>
         <thead>
           <tr>
             <th>#</th>
             <th>Title</th>
             <th>Amount</th>
+            <th>Date</th>
             <th>Category</th>
             <th>Details</th>
           </tr>
         </thead>
         <tbody>
-          {expenses?.data?.expenses.map((expense, index) => (
-            <tr key={expense?._id}>
-              <td>{index + 1}</td>
-              <td>{expense?.title}</td>
-              <td>{expense?.amount}</td>
-              <td>{expense?.category?.title}</td>
-              <td>
-                <Button variant="link" onClick={() => handleEdit(expense)}>
-                  View
-                </Button>
-              </td>
+          {data?.expenses?.length ? (
+            data?.expenses.map((expense, index) => (
+              <Expense
+                key={expense?._id}
+                index={index}
+                expense={expense}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
+            ))
+          ) : (
+            <tr>
+              <td colSpan='5'>There are no items to display</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </Table>
-      <EditExpense
-        singleExpense={singleExpense}
-        showEditModal={expenseEditModal}
-        handleCloseEdit={handleCloseEdit}
-      />
-    </div>
+      <Container className='table-navigators'>
+        {currentPage > 1 && (
+          <Button onClick={() => getResults(currentPage - 1)} variant='link'>
+            Previous
+          </Button>
+        )}
+        {data?.remainingRecords > 0 && (
+          <Button variant='link' onClick={() => getResults(currentPage + 1)}>
+            Next
+          </Button>
+        )}
+      </Container>
+    </>
   );
 };

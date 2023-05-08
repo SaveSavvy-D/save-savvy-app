@@ -23,13 +23,9 @@ export const Budgets = () => {
     dispatch(fetchBudgets());
   }, []);
 
-  const handleShowModal = () => {
-    setShowModal(true);
-  };
+  const handleShowModal = () => setShowModal(true);
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+  const handleCloseModal = () => setShowModal(false);
 
   const { status: categoryStatus, errors } = useSelector(
     (state) => state.category
