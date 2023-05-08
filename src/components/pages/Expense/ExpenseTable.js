@@ -1,43 +1,30 @@
-import { useEffect, useRef, useState } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AppSpinner } from '../../common/AppSpinner';
-import { AppAlert } from '../../common/AppAlert';
-import { AddExpense } from './AddExpense';
 import { STATUSES } from '../../../constants/statuses';
 import { fetchExpenses } from '../../../store/expenseSlice';
+import { showAllNotifications } from '../../../utils/notificationHelper';
+import ToastColors from '../../../constants/toastColors';
+import { Expense } from './Expense';
 
-export const ExpenseTable = () => {
+export const ExpenseTable = ({ currentPage, setCurrentPage }) => {
   const dispatch = useDispatch();
-  const currentPage = useRef(1);
-  const [expenseModal, setExpenseModal] = useState(false);
-  const [singleExpense, setSingleExpense] = useState('');
-  const { data: expenses, status } = useSelector((state) => state.expense);
 
-  useEffect(() => {
-    dispatch(fetchExpenses());
-  }, [dispatch]);
+  const { data, status, errors } = useSelector((state) => state.expense);
 
   const getResults = (pageNum) => {
-    currentPage.current = pageNum;
+    setCurrentPage(pageNum);
     dispatch(fetchExpenses(pageNum));
   };
-
-  const handleShow = (expenseData) => {
-    setSingleExpense(expenseData);
-    setExpenseModal(true);
-  };
-
-  const handleClose = () => setExpenseModal(false);
 
   if (status === STATUSES.LOADING) {
     return <AppSpinner />;
   }
-
   if (status === STATUSES.ERROR) {
-    return <AppAlert variant={'danger'} message='Oops! Something went wrong' />;
+    const errorArray = errors.map((error) => error.msg);
+    showAllNotifications(errorArray, ToastColors.error);
   }
 
   return (
@@ -54,20 +41,15 @@ export const ExpenseTable = () => {
           </tr>
         </thead>
         <tbody>
-          {expenses?.data?.expenses?.length ? (
-            expenses?.data?.expenses.map((expense, index) => (
-              <tr key={expense?._id}>
-                <td>{index + 1 + (currentPage.current - 1) * 5}</td>
-                <td>{expense?.title}</td>
-                <td>{expense?.amount}</td>
-                <td>{expense?.date.substring(0, 10)}</td>
-                <td>{expense?.category?.title}</td>
-                <td>
-                  <Button variant='link' onClick={() => handleShow(expense)}>
-                    View
-                  </Button>
-                </td>
-              </tr>
+          {data?.expenses?.length ? (
+            data?.expenses.map((expense, index) => (
+              <Expense
+                key={expense?._id}
+                index={index}
+                expense={expense}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
             ))
           ) : (
             <tr>
@@ -76,26 +58,14 @@ export const ExpenseTable = () => {
           )}
         </tbody>
       </Table>
-      <AddExpense
-        expense={singleExpense}
-        showModal={expenseModal}
-        handleClose={handleClose}
-        create={false}
-      />
       <Container className='table-navigators'>
-        {currentPage.current > 1 && (
-          <Button
-            onClick={() => getResults(currentPage.current - 1)}
-            variant='link'
-          >
+        {currentPage > 1 && (
+          <Button onClick={() => getResults(currentPage - 1)} variant='link'>
             Previous
           </Button>
         )}
-        {expenses?.data?.remainingRecords > 0 && (
-          <Button
-            variant='link'
-            onClick={() => getResults(currentPage.current + 1)}
-          >
+        {data?.remainingRecords > 0 && (
+          <Button variant='link' onClick={() => getResults(currentPage + 1)}>
             Next
           </Button>
         )}

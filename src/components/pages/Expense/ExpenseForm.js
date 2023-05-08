@@ -1,19 +1,24 @@
 import { Formik } from 'formik';
-import { useEffect } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
   createExpense,
   deleteExpense,
+  fetchExpenses,
   updateExpense,
 } from '../../../store/expenseSlice';
-import { fetchCategories } from '../../../store/categorySlice';
 import { ExpenseSchema } from '../../../utils/yup/schemas';
 
-export const AddExpense = ({ showModal, handleClose, expense, create }) => {
+export const ExpenseForm = ({
+  handleCloseModal,
+  expense,
+  create,
+  setCurrentPage,
+}) => {
   const dispatch = useDispatch();
-  const { data: categories } = useSelector((state) => state.category);
+  const { data } = useSelector((state) => state.category);
+
   const initialValues = {
     title: expense?.title || '',
     amount: expense?.amount || '',
@@ -22,39 +27,43 @@ export const AddExpense = ({ showModal, handleClose, expense, create }) => {
     categoryTitle: expense?.category?.title || '',
   };
 
-  useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
+  const resetTable = () => {
+    setCurrentPage(1);
+    dispatch(fetchExpenses());
+  };
 
-  const formatValues = (values) => {
-    const categoryId = categories?.filter(
+  const createPayload = (values) => {
+    const categoryId = data?.categories?.filter(
       (category) => category.title === values.categoryTitle
     );
 
     return { ...values, categoryId: categoryId[0]._id };
   };
 
-  const handleSubmitExpense = (values) => {
-    dispatch(createExpense(formatValues(values)));
+  const handleSubmitExpense = async (values) => {
+    const payload = createPayload(values);
+    await dispatch(createExpense(payload));
+    resetTable();
   };
 
-  const handleUpdateExpense = (values) => {
-    const payload = formatValues(values);
-    dispatch(
+  const handleUpdateExpense = async (values) => {
+    const payload = createPayload(values);
+    await dispatch(
       updateExpense({
         id: expense?._id,
         updatedBody: payload,
       })
     );
+    resetTable();
   };
 
-  const handleDeleteExpense = () => {
-    dispatch(deleteExpense({ id: expense?._id }));
-    window.location.reload();
+  const handleDeleteExpense = async () => {
+    await dispatch(deleteExpense({ id: expense?._id }));
+    resetTable();
   };
 
   return (
-    <Modal show={showModal} onHide={handleClose}>
+    <>
       <Modal.Header closeButton>
         <Modal.Title>Details</Modal.Title>
       </Modal.Header>
@@ -70,8 +79,7 @@ export const AddExpense = ({ showModal, handleClose, expense, create }) => {
             handleUpdateExpense(values);
           }
           setSubmitting(false);
-          handleClose();
-          window.location.reload();
+          handleCloseModal();
         }}
       >
         {({
@@ -155,7 +163,7 @@ export const AddExpense = ({ showModal, handleClose, expense, create }) => {
                   <option value={values.categoryTitle || ''}>
                     {values.categoryTitle || 'Select a category title'}
                   </option>
-                  {categories
+                  {data?.categories
                     ?.filter(
                       (category) => category.title !== values.categoryTitle
                     )
@@ -171,7 +179,7 @@ export const AddExpense = ({ showModal, handleClose, expense, create }) => {
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant='secondary' onClick={handleClose}>
+              <Button variant='secondary' onClick={handleCloseModal}>
                 Close
               </Button>
               <Button
@@ -181,22 +189,19 @@ export const AddExpense = ({ showModal, handleClose, expense, create }) => {
               >
                 {isSubmitting ? 'Saving...' : 'Save Changes'}
               </Button>
-              {!create ? (
+              {!create && (
                 <Button
                   variant='danger'
                   disabled={isSubmitting}
                   onClick={handleDeleteExpense}
-                  type='submit'
                 >
                   {isSubmitting ? 'Deleting...' : 'Delete'}
                 </Button>
-              ) : (
-                ''
               )}
             </Modal.Footer>
           </Form>
         )}
       </Formik>
-    </Modal>
+    </>
   );
 };

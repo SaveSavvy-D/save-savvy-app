@@ -1,11 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getCookie } from '../utils/cookie';
 import { STATUSES } from '../constants/statuses';
+import {
+  fetchStateHelper,
+  modifyStateHelper,
+  rejectStateHelper,
+} from '../utils/reduxStateHelper';
 
 const initialState = {
   data: [],
   status: STATUSES.IDLE,
-  error: null,
+  errors: [],
 };
 
 export const fetchExpenses = createAsyncThunk(
@@ -33,7 +38,6 @@ export const fetchExpenses = createAsyncThunk(
 export const createExpense = createAsyncThunk(
   'expense/createExpense',
   async (expenseBody) => {
-    console.log(expenseBody);
     const token = getCookie('token');
     const res = await fetch(`${process.env.REACT_APP_BASE_URL}/expenses/`, {
       method: 'POST',
@@ -52,7 +56,6 @@ export const createExpense = createAsyncThunk(
 export const updateExpense = createAsyncThunk(
   'expense/updateExpense',
   async ({ id, updatedBody }) => {
-    console.log(updatedBody, id);
     const token = getCookie('token');
     const res = await fetch(
       `${process.env.REACT_APP_BASE_URL}/expenses/${id}`,
@@ -101,45 +104,37 @@ const expenseSlice = createSlice({
         state.status = STATUSES.LOADING;
       })
       .addCase(fetchExpenses.fulfilled, (state, action) => {
-        state.data = action.payload;
-        state.status = STATUSES.IDLE;
+        fetchStateHelper(state, action.payload);
       })
       .addCase(fetchExpenses.rejected, (state, action) => {
-        state.status = STATUSES.ERROR;
-        state.error = action.payload;
+        rejectStateHelper(state);
       })
       .addCase(createExpense.pending, (state, action) => {
         state.status = STATUSES.LOADING;
       })
       .addCase(createExpense.fulfilled, (state, action) => {
-        state.data?.data?.expenses?.push(action.payload?.data?.expense);
-        state.status = STATUSES.IDLE;
+        modifyStateHelper(state, action.payload);
       })
       .addCase(createExpense.rejected, (state, action) => {
-        state.status = STATUSES.ERROR;
-        state.error = action.payload;
+        rejectStateHelper(state);
       })
       .addCase(updateExpense.pending, (state, action) => {
         state.status = STATUSES.LOADING;
       })
       .addCase(updateExpense.fulfilled, (state, action) => {
-        state.data?.data?.expenses?.push(action.payload?.data?.expense);
-        state.status = STATUSES.IDLE;
+        modifyStateHelper(state, action.payload);
       })
       .addCase(updateExpense.rejected, (state, action) => {
-        state.status = STATUSES.ERROR;
-        state.error = action.payload;
+        rejectStateHelper(state);
       })
       .addCase(deleteExpense.pending, (state, action) => {
         state.status = STATUSES.LOADING;
       })
       .addCase(deleteExpense.fulfilled, (state, action) => {
-        state.data = action.payload;
-        state.status = STATUSES.IDLE;
+        modifyStateHelper(state, action.payload);
       })
       .addCase(deleteExpense.rejected, (state, action) => {
-        state.status = STATUSES.ERROR;
-        state.error = action.payload;
+        rejectStateHelper(state);
       });
   },
 });

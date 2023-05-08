@@ -91,6 +91,7 @@ export const BudgetForm = ({
           handleBlur,
           handleSubmit,
           isSubmitting,
+          dirty,
         }) => (
           <Form onSubmit={handleSubmit}>
             <Modal.Body>
@@ -168,7 +169,11 @@ export const BudgetForm = ({
               <Button variant='secondary' onClick={handleCloseModal}>
                 Close
               </Button>
-              <Button variant='primary' type='submit' disabled={isSubmitting}>
+              <Button
+                variant='primary'
+                type='submit'
+                disabled={!dirty || isSubmitting}
+              >
                 {isSubmitting ? 'Saving...' : 'Save Changes'}
               </Button>
               {!create && (
