@@ -6,6 +6,10 @@
   margin-right: 5px;
 }
 
+.margin-left-5 {
+  margin-left: 5px;
+}
+
 .margin-right-20 {
   margin-right: 20px;
 }
@@ -92,4 +96,10 @@
 .auth-switch-container {
   background-color: rgb(140, 0, 14);
   transform: rotate(-90deg);
+}
+
+.dashboard-charts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
