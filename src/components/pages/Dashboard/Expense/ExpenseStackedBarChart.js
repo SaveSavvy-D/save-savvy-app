@@ -14,25 +14,21 @@ const ExpenseStackedBarChart = ({ stackedBarChartData, CATEGORY_COLORS }) => {
   return (
     <>
       {stackedBarChartData.length > 0 && (
-        <ResponsiveContainer width='40%' height={400}>
+        <ResponsiveContainer width='100%' height={500}>
           <BarChart data={stackedBarChartData}>
-            <CartesianGrid strokeDasharray='3 3' />
-            <XAxis dataKey='date' />
-            <YAxis />
+            <CartesianGrid vertical={false} fill='gray' fillOpacity={0.1} />
+            <XAxis dataKey='date' axisLine={false} />
+            <YAxis axisLine={false} />
             <Tooltip />
-            {/* <Legend /> */}
-            {stackedBarChartData.map((data, index) =>
-              Object.keys(stackedBarChartData[index])
-                .filter((key) => key !== 'date' && key !== 'total')
-                .map((key, index) => (
-                  <Bar
-                    key={key}
-                    dataKey={key}
-                    stackId='a'
-                    fill={CATEGORY_COLORS[key]}
-                  />
-                ))
-            )}
+            <Legend />
+            {Object.keys(CATEGORY_COLORS).map((name) => (
+              <Bar
+                key={name}
+                dataKey={name}
+                stackId='a'
+                fill={CATEGORY_COLORS[name]}
+              />
+            ))}
           </BarChart>
         </ResponsiveContainer>
       )}

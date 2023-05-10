@@ -5,14 +5,13 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
   LineChart,
   Line,
 } from 'recharts';
 
 const ExpenseLineChart = ({ stackedBarChartData }) => {
   return (
-    <ResponsiveContainer width='40%' height={400}>
+    <ResponsiveContainer width='100%' height={300}>
       <LineChart
         data={stackedBarChartData}
         margin={{
@@ -22,11 +21,10 @@ const ExpenseLineChart = ({ stackedBarChartData }) => {
           bottom: 50,
         }}
       >
-        <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='date' />
-        <YAxis />
+        <CartesianGrid vertical={false} fill='gray' fillOpacity={0.1} />
+        <XAxis axisLine={false} dataKey='date' />
+        <YAxis axisLine={false} />
         <Tooltip />
-        {/* <Legend /> */}
         <Line
           type='monotone'
           dataKey='total'

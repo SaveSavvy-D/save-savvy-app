@@ -61,16 +61,20 @@ const Expenses = ({ expenses, COLORS }) => {
         Expenses
         <FontAwesomeIcon icon={faPenToSquare} className='margin-left-5' />
       </h2>
-      <div className='dashboard-charts'>
-        <ExpenseBarChart
-          CATEGORY_COLORS={CATEGORY_COLORS}
-          groupedExpenses={groupedExpenses}
-        />
-        <ExpenseLineChart stackedBarChartData={stackedBarChartData} />
-        <ExpenseStackedBarChart
-          stackedBarChartData={stackedBarChartData}
-          CATEGORY_COLORS={CATEGORY_COLORS}
-        />
+      <div className='expenses-row'>
+        <div>
+          <ExpenseStackedBarChart
+            stackedBarChartData={stackedBarChartData}
+            CATEGORY_COLORS={CATEGORY_COLORS}
+          />
+        </div>
+        <div className='dashboard-charts'>
+          <ExpenseLineChart stackedBarChartData={stackedBarChartData} />
+          <ExpenseBarChart
+            CATEGORY_COLORS={CATEGORY_COLORS}
+            groupedExpenses={groupedExpenses}
+          />
+        </div>
       </div>
     </>
   );

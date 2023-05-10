@@ -8,13 +8,12 @@ import {
   Tooltip,
   Cell,
   ResponsiveContainer,
-  Legend,
   Label,
 } from 'recharts';
 
 const ExpenseBarChart = ({ groupedExpenses, CATEGORY_COLORS }) => {
   return (
-    <ResponsiveContainer width='40%' height={400}>
+    <ResponsiveContainer width='100%' height={300}>
       <BarChart
         data={groupedExpenses}
         margin={{
@@ -24,21 +23,11 @@ const ExpenseBarChart = ({ groupedExpenses, CATEGORY_COLORS }) => {
           bottom: 50,
         }}
       >
-        {/* <Legend
-          verticalAlign='top'
-          align='left'
-          payload={groupedExpenses.map((groupedExpense, index) => ({
-            value: groupedExpense.category,
-            type: 'circle',
-            id: `dataKey${index}`,
-            color: CATEGORY_COLORS[groupedExpense.category],
-          }))}
-        /> */}
-        <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='category' tick={{ display: 'none' }}>
+        <CartesianGrid vertical={false} fill='gray' fillOpacity={0.1} />
+        <XAxis dataKey='category' tick={{ display: 'none' }} axisLine={false}>
           <Label value='Expense Category' offset={0} position='insideBottom' />
         </XAxis>
-        <YAxis>
+        <YAxis axisLine={false}>
           <Label
             angle={-90}
             value='Amount Spent'

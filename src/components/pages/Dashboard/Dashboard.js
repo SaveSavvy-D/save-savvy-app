@@ -1,7 +1,5 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
@@ -38,10 +36,6 @@ const Dashboard = () => {
 
   return (
     <Container>
-      <h2 className='margin-bottom-50'>
-        <FontAwesomeIcon icon={faChartLine} className='margin-right-5' />
-        Dashboard
-      </h2>
       <Expenses
         expenses={expenseData?.expenses}
         COLORS={Object.values(CATEGORY_COLORS)}
