@@ -97,21 +97,3 @@
   background-color: rgb(140, 0, 14);
   transform: rotate(-90deg);
 }
-
-.dashboard-charts {
-  display: flex;
-  flex-direction: column;
-}
-
-.expenses-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.expenses-row > div {
-  flex-basis: 50%;
-  box-sizing: border-box;
-  padding: 0 1%;
-}

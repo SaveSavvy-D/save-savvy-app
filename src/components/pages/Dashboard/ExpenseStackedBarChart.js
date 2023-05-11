@@ -7,20 +7,18 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from 'recharts';
 
 const ExpenseStackedBarChart = ({ stackedBarChartData, CATEGORY_COLORS }) => {
   return (
     <>
       {stackedBarChartData.length > 0 && (
-        <ResponsiveContainer width='100%' height={500}>
+        <ResponsiveContainer width='95%' height={385}>
           <BarChart data={stackedBarChartData}>
             <CartesianGrid vertical={false} fill='gray' fillOpacity={0.1} />
             <XAxis dataKey='date' axisLine={false} />
             <YAxis axisLine={false} />
             <Tooltip />
-            <Legend />
             {Object.keys(CATEGORY_COLORS).map((name) => (
               <Bar
                 key={name}

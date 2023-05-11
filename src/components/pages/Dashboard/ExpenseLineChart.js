@@ -11,14 +11,13 @@ import {
 
 const ExpenseLineChart = ({ stackedBarChartData }) => {
   return (
-    <ResponsiveContainer width='100%' height={300}>
+    <ResponsiveContainer width='100%' height={200}>
       <LineChart
         data={stackedBarChartData}
         margin={{
           top: 5,
           right: 30,
           left: 20,
-          bottom: 50,
         }}
       >
         <CartesianGrid vertical={false} fill='gray' fillOpacity={0.1} />
@@ -30,6 +29,7 @@ const ExpenseLineChart = ({ stackedBarChartData }) => {
           dataKey='total'
           name='Expenditure'
           stroke='#8884d8'
+          strokeWidth={2}
           activeDot={{ r: 8 }}
         />
       </LineChart>
