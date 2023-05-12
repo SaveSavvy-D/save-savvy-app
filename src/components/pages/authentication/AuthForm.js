@@ -20,7 +20,6 @@ const AuthForm = ({ type }) => {
     type === 'LOGIN' ? dispatch(login(creds)) : dispatch(signup(creds));
     setSubmitting(false);
     resetForm();
-    console.log('Auth form submitted');
   };
   return (
     <Formik

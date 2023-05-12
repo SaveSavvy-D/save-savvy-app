@@ -48,6 +48,7 @@ const Authentication = () => {
             ) : (
               <div className='d-flex w-100'>
                 <div className='d-flex flex-column justify-content-center align-items-center col-5 bg-info bg-opacity-50'>
+                  
                   <img src={Applogo} alt='' className='col-4 pb-5' />
                   <p className='text-center text-white fs-4 w-100 pt-2'>
                     Don't have an account?

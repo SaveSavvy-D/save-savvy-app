@@ -3,6 +3,7 @@ import expenseReducer from './expenseSlice';
 import categoryReducer from './categorySlice';
 import budgetReducer from './budgetSlice';
 import userReducer from './userSlice';
+import profileReducer from './profileSlice';
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     category: categoryReducer,
     budget: budgetReducer,
     user: userReducer,
+    profile: profileReducer,
   },
 });
 

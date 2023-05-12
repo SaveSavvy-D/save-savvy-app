@@ -57,7 +57,7 @@ export default userSlice.reducer;
 
 export const login = createAsyncThunk('user/login', async (creds) => {
   console.log(process.env.REACT_APP_BASE_UR);
-  const res = await fetch(`${process.env.REACT_APP_BASE_URL}auth/login`, {
+  const res = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ export const login = createAsyncThunk('user/login', async (creds) => {
 
 export const signup = createAsyncThunk('user/signup', async (creds) => {
   console.log(process.env.REACT_APP_BASE_UR);
-  const res = await fetch(`${process.env.REACT_APP_BASE_URL}auth/signup`, {
+  const res = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

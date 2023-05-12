@@ -63,3 +63,9 @@ export const ExpenseSchema = Yup.object().shape({
   date: Yup.date().required('Required'),
   categoryTitle: Yup.string().required('Select atleast one category'),
 });
+export const ProfileSchema = Yup.object().shape({
+  name: Yup.string().required('Name required'),
+  currency: Yup.string()
+    .length(3, 'Currency code must be three letters long')
+    .matches(/^[A-Z]{3}$/, 'Currency code must be uppercase letters'),
+});
