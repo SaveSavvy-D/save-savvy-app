@@ -8,10 +8,12 @@ const ProfileForm = () => {
   const { profile } = useSelector((state) => state.profile);
   const dispath = useDispatch();
   const onSubmit = (values, { setSubmitting, resetForm }) => {
-    const { _id } = profile;
-    !profile
-      ? dispath(createProfile(values))
-      : dispath(updateProfile({ values, _id }));
+    if (!profile) dispath(createProfile(values));
+    else {
+      const { _id } = profile;
+      dispath(updateProfile({ values, _id }));
+    }
+
     setSubmitting(false);
     resetForm();
   };
@@ -113,6 +115,7 @@ const ProfileForm = () => {
                                     <td>
                                       <button
                                         type='button'
+                                        className='border-0 bg-light-red text-white rounded'
                                         onClick={() =>
                                           arrayHelpers.remove(index)
                                         }

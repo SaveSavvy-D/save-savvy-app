@@ -139,3 +139,7 @@ input:focus {
 .w-80 {
   width: 80%;
 }
+
+.bg-light-red {
+  background-color: rgb(255, 55, 55);
+}
