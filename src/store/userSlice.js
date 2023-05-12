@@ -56,7 +56,6 @@ const userSlice = createSlice({
 export default userSlice.reducer;
 
 export const login = createAsyncThunk('user/login', async (creds) => {
-  console.log(process.env.REACT_APP_BASE_UR);
   const res = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
     method: 'POST',
     headers: {
@@ -64,12 +63,10 @@ export const login = createAsyncThunk('user/login', async (creds) => {
     },
     body: JSON.stringify(creds),
   });
-  console.log(res);
   return await res.json();
 });
 
 export const signup = createAsyncThunk('user/signup', async (creds) => {
-  console.log(process.env.REACT_APP_BASE_UR);
   const res = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/signup`, {
     method: 'POST',
     headers: {
@@ -77,6 +74,5 @@ export const signup = createAsyncThunk('user/signup', async (creds) => {
     },
     body: JSON.stringify(creds),
   });
-  console.log(res);
   return await res.json();
 });

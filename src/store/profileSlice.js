@@ -24,13 +24,13 @@ const profileSlice = createSlice({
       })
       .addCase(fetchProfile.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
+        console.log(action);
       })
       .addCase(createProfile.pending, (state, action) => {
         state.status = STATUSES.LOADING;
       })
       .addCase(createProfile.fulfilled, (state, action) => {
         state.status = STATUSES.IDLE;
-        console.log(action);
         if (!action.payload.errors && action.payload.status) {
           state.profile = action.payload.data.profile;
         }
@@ -44,7 +44,6 @@ const profileSlice = createSlice({
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.status = STATUSES.IDLE;
-        console.log(action);
         if (!action.payload.errors && action.payload.status) {
           state.profile = action.payload.data.profile;
         }
@@ -77,7 +76,6 @@ export const fetchProfile = createAsyncThunk(
 export const createProfile = createAsyncThunk(
   'profile/createProfile',
   async (payload) => {
-    console.log(payload);
     const token = getCookie('token');
     const res = await fetch(`${process.env.REACT_APP_BASE_URL}/profile`, {
       method: 'POST',
@@ -94,7 +92,6 @@ export const createProfile = createAsyncThunk(
 export const updateProfile = createAsyncThunk(
   'profile/updateProfile',
   async (payload) => {
-    console.log(payload);
     const token = getCookie('token');
     const res = await fetch(
       `${process.env.REACT_APP_BASE_URL}/profile/update/${payload._id}`,

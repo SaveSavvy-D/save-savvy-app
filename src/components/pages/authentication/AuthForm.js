@@ -13,7 +13,6 @@ const AuthForm = ({ type }) => {
   const { authSuccess, authErrors } = useSelector((state) => state.user);
   useEffect(() => {
     if (authSuccess) navigate('/');
-    if (authErrors) console.log(authErrors);
   }, [authSuccess, authErrors]);
 
   const onSubmit = (creds, { setSubmitting, resetForm }) => {
