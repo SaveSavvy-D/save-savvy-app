@@ -8,15 +8,25 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+import monthMappings from '../../../constants/monthMappings';
 
-const ExpenseStackedBarChart = ({ stackedBarChartData, CATEGORY_COLORS }) => {
+const ExpenseStackedBarChart = ({
+  expenseStackedBarChartData,
+  CATEGORY_COLORS,
+}) => {
   return (
     <>
-      {stackedBarChartData.length > 0 && (
-        <ResponsiveContainer width='95%' height={385}>
-          <BarChart data={stackedBarChartData}>
+      {expenseStackedBarChartData.length > 0 && (
+        <ResponsiveContainer width='100%' height={385}>
+          <BarChart data={expenseStackedBarChartData}>
             <CartesianGrid vertical={false} fill='gray' fillOpacity={0.1} />
-            <XAxis dataKey='date' axisLine={false} />
+            <XAxis
+              dataKey='date'
+              axisLine={false}
+              tickFormatter={(date) =>
+                `${date.substring(0, 2)} ${monthMappings[date.substring(3, 5)]}`
+              }
+            />
             <YAxis axisLine={false} />
             <Tooltip />
             {Object.keys(CATEGORY_COLORS).map((name) => (

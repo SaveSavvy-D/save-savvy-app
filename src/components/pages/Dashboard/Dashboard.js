@@ -15,10 +15,21 @@ import ExpenseStackedBarChart from './ExpenseStackedBarChart';
 import ExpenseLineChart from './ExpenseLineChart';
 import ExpenseBarChart from './ExpenseBarChart';
 import '../../css/Dashboard.css';
+import BudgetStackedBarChart from './BudgetStackedBarChart';
+import {
+  getExpenseBarChartData,
+  getGroupedExpenses,
+} from '../../../utils/Dashboard/Expenses/expensesHelper';
+import { getGroupedBudgets } from '../../../utils/Dashboard/Budgets/budgetsHelper';
 
 const Dashboard = () => {
   const [groupedExpenses, setGroupedExpenses] = useState([]);
-  const [stackedBarChartData, setStackedBarChartData] = useState([]);
+  const [expenseStackedBarChartData, setExpenseStackedBarChartData] = useState(
+    []
+  );
+  const [budgetStackedBarChartData, setBudgetStackedBarChartData] = useState(
+    []
+  );
   const dispatch = useDispatch();
 
   const {
@@ -27,58 +38,37 @@ const Dashboard = () => {
     errors: expenseErrors,
   } = useSelector((state) => state.expense);
 
+  const {
+    data: budgetData,
+    status: budgetStatus,
+    errors: budgetErrors,
+  } = useSelector((state) => state.budget);
+
   useEffect(() => {
-    dispatch(fetchBudgets());
+    dispatch(fetchBudgets('all'));
     dispatch(fetchExpenses('all'));
   }, []);
 
   useEffect(() => {
     const expenses = expenseData?.expenses;
-    if (expenses) {
-      const groupedExpenses = expenses.reduce((acc, curr) => {
-        const categoryId = curr.category._id;
-        if (acc[categoryId]) {
-          acc[categoryId].Amount += curr.amount;
-        } else {
-          acc[categoryId] = {
-            _id: categoryId,
-            category: curr.category.title,
-            Amount: curr.amount,
-          };
-        }
-        return acc;
-      }, {});
-      setGroupedExpenses(Object.values(groupedExpenses));
+    const budgets = budgetData?.budgets;
 
-      const groupedData = expenses.reduce((acc, { date, category, amount }) => {
-        const dateStr = new Date(date).toLocaleDateString();
-        if (!acc[dateStr]) {
-          acc[dateStr] = {};
-        }
-        if (!acc[dateStr][category.title]) {
-          acc[dateStr][category.title] = 0;
-        }
-        acc[dateStr][category.title] += amount;
-        return acc;
-      }, []);
+    if (expenses && budgets) {
+      const groupedExpenses = getGroupedExpenses(expenses);
+      setGroupedExpenses(groupedExpenses);
 
-      const transformedData = Object.keys(groupedData).map((date) => {
-        const categories = groupedData[date];
-        const total = Object.values(categories).reduce(
-          (acc, curr) => acc + curr,
-          0
-        );
+      const expenseBarChartData = getExpenseBarChartData(expenses);
+      setExpenseStackedBarChartData(expenseBarChartData);
 
-        return { date, ...categories, total };
-      });
-      setStackedBarChartData(transformedData.reverse());
+      const groupedBudgets = getGroupedBudgets(groupedExpenses, budgets);
+      setBudgetStackedBarChartData(groupedBudgets);
     }
-  }, [expenseData?.expenses]);
+  }, [expenseData?.expenses, budgetData?.budgets]);
 
-  if (expenseStatus === STATUSES.LOADING) {
+  if (expenseStatus === STATUSES.LOADING || budgetStatus === STATUSES.LOADING) {
     return <AppSpinner />;
   }
-  if (expenseErrors === STATUSES.ERROR) {
+  if (expenseErrors === STATUSES.ERROR || budgetErrors === STATUSES.ERROR) {
     const errorArray = expenseErrors.map((error) => error.msg);
     showAllNotifications(errorArray, ToastColors.error);
   }
@@ -89,23 +79,26 @@ const Dashboard = () => {
         <div className='dashboard-column-1'>
           <DashboardCards />
           <div className='dashboard-card-stacked-bar-chart'>
-            <ExpenseStackedBarChart
-              stackedBarChartData={stackedBarChartData}
-              CATEGORY_COLORS={CATEGORY_COLORS}
+            <ExpenseLineChart
+              expenseStackedBarChartData={expenseStackedBarChartData}
             />
           </div>
         </div>
         <div className='dashboard-column-2'>
-          <div className='dashboard-cards'>
-            <ExpenseLineChart stackedBarChartData={stackedBarChartData} />
-          </div>
           <div className='dashboard-cards'>
             <ExpenseBarChart
               CATEGORY_COLORS={CATEGORY_COLORS}
               groupedExpenses={groupedExpenses}
             />
           </div>
+          <div className='dashboard-cards'>
+            <BudgetStackedBarChart data={budgetStackedBarChartData} />
+          </div>
         </div>
+        <ExpenseStackedBarChart
+          expenseStackedBarChartData={expenseStackedBarChartData}
+          CATEGORY_COLORS={CATEGORY_COLORS}
+        />
       </div>
     </Container>
   );

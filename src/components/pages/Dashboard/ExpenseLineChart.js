@@ -8,12 +8,13 @@ import {
   LineChart,
   Line,
 } from 'recharts';
+import monthMappings from '../../../constants/monthMappings';
 
-const ExpenseLineChart = ({ stackedBarChartData }) => {
+const ExpenseLineChart = ({ expenseStackedBarChartData }) => {
   return (
-    <ResponsiveContainer width='100%' height={200}>
+    <ResponsiveContainer width='100%' height={385}>
       <LineChart
-        data={stackedBarChartData}
+        data={expenseStackedBarChartData}
         margin={{
           top: 5,
           right: 30,
@@ -21,7 +22,13 @@ const ExpenseLineChart = ({ stackedBarChartData }) => {
         }}
       >
         <CartesianGrid vertical={false} fill='gray' fillOpacity={0.1} />
-        <XAxis axisLine={false} dataKey='date' />
+        <XAxis
+          axisLine={false}
+          dataKey='date'
+          tickFormatter={(date) =>
+            `${date.substring(0, 2)} ${monthMappings[date.substring(3, 5)]}`
+          }
+        />
         <YAxis axisLine={false} />
         <Tooltip />
         <Line
