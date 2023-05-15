@@ -1,7 +1,8 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
+import formatAmount from '../../../utils/currencyFormatter';
 
-const DashboardCards = () => {
+const DashboardCards = ({ expenditure }) => {
   return (
     <div className='dashboard-cards-container'>
       <Card className='dashboard-card'>
@@ -13,7 +14,7 @@ const DashboardCards = () => {
       <Card className='dashboard-card'>
         <Card.Body>
           <Card.Subtitle className='mb-2 text-muted'>Expenditure</Card.Subtitle>
-          <Card.Title>Rs 35,000</Card.Title>
+          <Card.Title>{formatAmount(expenditure, 'PKR')}</Card.Title>
         </Card.Body>
       </Card>
     </div>

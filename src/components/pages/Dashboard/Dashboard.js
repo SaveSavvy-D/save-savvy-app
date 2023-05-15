@@ -23,6 +23,7 @@ import {
 import { getGroupedBudgets } from '../../../utils/Dashboard/Budgets/budgetsHelper';
 
 const Dashboard = () => {
+  const [expenditure, setExpediture] = useState(0);
   const [groupedExpenses, setGroupedExpenses] = useState([]);
   const [expenseStackedBarChartData, setExpenseStackedBarChartData] = useState(
     []
@@ -57,6 +58,12 @@ const Dashboard = () => {
       const groupedExpenses = getGroupedExpenses(expenses);
       setGroupedExpenses(groupedExpenses);
 
+      const total = groupedExpenses.reduce(
+        (acc, expense) => acc + expense.Amount,
+        0
+      );
+      setExpediture(total);
+
       const expenseBarChartData = getExpenseBarChartData(expenses);
       setExpenseStackedBarChartData(expenseBarChartData);
 
@@ -78,7 +85,7 @@ const Dashboard = () => {
     <Container>
       <div className='dashboard-container'>
         <div className='dashboard-column-1'>
-          <DashboardCards />
+          <DashboardCards expenditure={expenditure} />
           <div className='dashboard-card-stacked-bar-chart'>
             <ExpenseLineChart
               expenseStackedBarChartData={expenseStackedBarChartData}
