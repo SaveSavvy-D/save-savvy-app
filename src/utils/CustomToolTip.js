@@ -3,10 +3,8 @@ const CustomTooltip = ({ active, payload, label }) => {
     return (
       <div className='custom-tooltip'>
         <p>{`${payload[0].payload.category}`}</p>
-        <p className='custom-tooltip-threshold'>{`Threshold: ${payload[0].payload.threshold}`}</p>
-        <p className='custom-tooltip-used'>{`Used: ${payload[0].payload.used}`}</p>
         <p>
-          Remaining:
+          Used: PKR
           <span
             className={
               payload[0].payload.remaining > 0
@@ -14,8 +12,9 @@ const CustomTooltip = ({ active, payload, label }) => {
                 : 'custom-tooltip-red'
             }
           >
-            {` ${payload[0].payload.remaining} Rs`}
+            {` ${payload[0].payload.used}`}
           </span>
+          /<span>{`${payload[0].payload.threshold}`}</span>
         </p>
         <p>{`End Date: ${payload[0].payload.endDate.substring(0, 10)}`}</p>
       </div>
