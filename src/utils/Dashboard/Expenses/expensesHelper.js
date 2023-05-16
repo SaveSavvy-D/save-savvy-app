@@ -1,3 +1,5 @@
+import formatDate from '../../dateFormatter';
+
 export const getGroupedExpenses = (expenses) => {
   const groupedExpenses = expenses.reduce((acc, curr) => {
     const categoryId = curr.category._id;
@@ -19,7 +21,7 @@ export const getGroupedExpenses = (expenses) => {
 
 export const getExpenseBarChartData = (expenses) => {
   const groupedData = expenses.reduce((acc, { date, category, amount }) => {
-    const dateStr = new Date(date).toLocaleDateString();
+    const dateStr = formatDate(new Date(date));
     acc[dateStr] = acc[dateStr] || {};
     acc[dateStr][category.title] = (acc[dateStr][category.title] || 0) + amount;
     return acc;

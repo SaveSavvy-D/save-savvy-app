@@ -10,21 +10,14 @@ import {
   ResponsiveContainer,
   Label,
 } from 'recharts';
+import { chartConfig } from '../../../utils/chartConfig';
 
 const ExpenseBarChart = ({ groupedExpenses, CATEGORY_COLORS }) => {
   return (
     <ResponsiveContainer width='100%' height={200}>
-      <BarChart
-        data={groupedExpenses}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
+      <BarChart data={groupedExpenses} margin={chartConfig.margin}>
         <CartesianGrid vertical={false} fill='gray' fillOpacity={0.1} />
-        <XAxis dataKey='category' tick={{ display: 'none' }} axisLine={false}>
+        <XAxis dataKey='category' tick={chartConfig.tick} axisLine={false}>
           <Label value='Expense Category' offset={0} position='insideBottom' />
         </XAxis>
         <YAxis axisLine={false}>

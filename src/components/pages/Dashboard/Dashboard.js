@@ -76,7 +76,7 @@ const Dashboard = () => {
     return <AppSpinner />;
   }
   if (expenseStatus === STATUSES.ERROR || budgetStatus === STATUSES.ERROR) {
-    let errorArray = expenseErrors.push(budgetErrors);
+    let errorArray = expenseErrors.concat(budgetErrors);
     errorArray = errorArray.map((error) => error.msg);
     showAllNotifications(errorArray, ToastColors.error);
   }

@@ -9,18 +9,12 @@ import {
   Line,
 } from 'recharts';
 import monthMappings from '../../../constants/monthMappings';
+import { chartConfig } from '../../../utils/chartConfig';
 
 const ExpenseLineChart = ({ expenseStackedBarChartData }) => {
   return (
     <ResponsiveContainer width='100%' height={385}>
-      <LineChart
-        data={expenseStackedBarChartData}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-        }}
-      >
+      <LineChart data={expenseStackedBarChartData} margin={chartConfig.margin}>
         <CartesianGrid vertical={false} fill='gray' fillOpacity={0.1} />
         <XAxis
           axisLine={false}
