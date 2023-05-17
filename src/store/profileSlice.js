@@ -94,7 +94,7 @@ export const updateProfile = createAsyncThunk(
   async (payload) => {
     const token = getCookie('token');
     const res = await fetch(
-      `${process.env.REACT_APP_BASE_URL}/profile/update/${payload._id}`,
+      `${process.env.REACT_APP_BASE_URL}/profile/${payload._id}`,
       {
         method: 'PATCH',
         headers: {

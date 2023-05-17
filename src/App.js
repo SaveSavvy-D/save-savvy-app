@@ -4,8 +4,6 @@ import { Expenses } from './components/pages/Expense/Expenses';
 import Authentication from './components/pages/authentication/Authentication';
 import { Budgets } from './components/pages/Budget/Budgets';
 import Profile from './components/pages/Profile/Profile';
-import store from './store/store';
-import { Provider } from 'react-redux';
 
 function App() {
   return (

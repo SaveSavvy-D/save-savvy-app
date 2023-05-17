@@ -32,7 +32,6 @@ const ProfileForm = () => {
           return (
             <Form className='w-75 py-5'>
               <p className='fs-2 '>
-                {' '}
                 {profile ? 'Edit Profile' : 'Create Profile'}
               </p>
               <div className='d-flex flex-column gap-4 bg-white shadow px-5 pt-5 pb-4'>
@@ -100,9 +99,7 @@ const ProfileForm = () => {
                                       <Field
                                         name={`earningDetails.${index}.month`}
                                         type='date'
-                                        value={new Date(earningDetail.month)
-                                          .toISOString()
-                                          .substr(0, 10)}
+                                        value={new Date(earningDetail.month)}
                                       />
                                     </td>
                                     <td>
