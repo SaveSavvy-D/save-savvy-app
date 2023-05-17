@@ -34,9 +34,6 @@ function Header() {
             <Nav.Link className='margin-right-20' as={Link} to='/budgets'>
               Budgets
             </Nav.Link>
-            <Nav.Link className='margin-right-100' as={Link} to='/alerts'>
-              Alerts
-            </Nav.Link>
             <NavDropdown
               title={<FontAwesomeIcon icon={faUser} size='lg' />}
               id='basic-nav-dropdown'
