@@ -22,8 +22,6 @@ export const AlertForm = ({
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  console.log('in alertForm', showModal, budgetId);
-
   const resetTable = () => {
     setCurrentPage(1);
     dispatch(fetchBudgetAlerts(id));
@@ -34,7 +32,6 @@ export const AlertForm = ({
   };
 
   const handleUpdateBudget = async (values) => {
-    console.log(values);
     await dispatch(updateAlert({ id: alert._id, newData: values }));
     resetTable();
   };
@@ -63,7 +60,6 @@ export const AlertForm = ({
           }}
           validationSchema={AlertSchema}
           onSubmit={(values, { setSubmitting }) => {
-            console.log(create);
             if (create) {
               handleCreateAlert(values);
             } else {
@@ -150,7 +146,7 @@ export const AlertForm = ({
                 <Button variant='primary' type='submit' disabled={isSubmitting}>
                   {isSubmitting ? 'Saving...' : 'Save Changes'}
                 </Button>
-                {!create ? (
+                {!create && (
                   <Button
                     variant='danger'
                     disabled={isSubmitting}
@@ -159,8 +155,6 @@ export const AlertForm = ({
                   >
                     {isSubmitting ? 'Deleting...' : 'Delete'}
                   </Button>
-                ) : (
-                  ''
                 )}
               </Modal.Footer>
             </Form>

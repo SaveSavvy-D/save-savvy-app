@@ -8,7 +8,6 @@ export const Alerts = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   return (
-    <>
       <Container>
         <div className='page-header-row'>
           <h2>
@@ -18,6 +17,5 @@ export const Alerts = () => {
         </div>
         <AlertTable setCurrentPage={setCurrentPage} currentPage={currentPage} />
       </Container>
-    </>
   );
 };

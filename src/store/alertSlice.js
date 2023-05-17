@@ -29,7 +29,6 @@ export const fetchBudgetAlerts = createAsyncThunk(
       }
     );
     const data = await res.json();
-    console.log(data);
 
     return data;
   }
@@ -49,7 +48,7 @@ export const createAlert = createAsyncThunk(
     });
 
     const data = await res.json();
-    console.log(data);
+
     return data;
   }
 );
@@ -57,8 +56,6 @@ export const createAlert = createAsyncThunk(
 export const updateAlert = createAsyncThunk(
   'alert/updateAlert',
   async ({ id, newData }) => {
-    console.log(id);
-    console.log(newData);
     const token = getCookie('token');
     const res = await fetch(`${process.env.REACT_APP_BASE_URL}alerts/${id}`, {
       method: 'PATCH',
@@ -70,7 +67,7 @@ export const updateAlert = createAsyncThunk(
     });
 
     const data = await res.json();
-    console.log(data);
+
     return data;
   }
 );

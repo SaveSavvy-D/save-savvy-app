@@ -3,7 +3,6 @@ import { Button } from 'react-bootstrap';
 import { AlertForm } from './AlertForm';
 
 export const Alert = ({ index, alert, currentPage, setCurrentPage }) => {
-  console.log(alert);
   const [showAlertModal, setShowAlertModal] = useState(false);
 
   const handleShowAlert = () => {
