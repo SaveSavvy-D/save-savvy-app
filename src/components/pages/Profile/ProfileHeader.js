@@ -1,4 +1,4 @@
-import React, { useDebugValue, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 const ProfileHeader = ({ selection }) => {
   const [showSelected, setShowSelected] = useState(true);

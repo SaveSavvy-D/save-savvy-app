@@ -23,7 +23,12 @@ const ProfileForm = () => {
         initialValues={{
           name: profile ? profile.name : '',
           currency: profile ? profile.currency : '',
-          earningDetails: profile ? profile.earningDetails : [],
+          earningDetails: profile
+            ? profile.earningDetails.map((detail) => ({
+                ...detail,
+                date: detail.date,
+              }))
+            : [],
         }}
         validationSchema={ProfileSchema}
         onSubmit={onSubmit}
@@ -76,9 +81,9 @@ const ProfileForm = () => {
                                   className='rounded border-0 btn-green text-white py-1 px-2'
                                   onClick={() =>
                                     arrayHelpers.push({
-                                      month: new Date().toLocaleDateString(
-                                        'en-GB'
-                                      ),
+                                      date: new Date()
+                                        .toISOString()
+                                        .substring(0, 7),
                                       amount: 0,
                                     })
                                   }
@@ -97,9 +102,8 @@ const ProfileForm = () => {
                                   <tr key={earningDetail._id}>
                                     <td>
                                       <Field
-                                        name={`earningDetails.${index}.month`}
-                                        type='date'
-                                        value={new Date(earningDetail.month)}
+                                        name={`earningDetails.${index}.date`}
+                                        type='month'
                                       />
                                     </td>
                                     <td>

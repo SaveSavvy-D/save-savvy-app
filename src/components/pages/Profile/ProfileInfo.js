@@ -29,7 +29,7 @@ const ProfileInfo = () => {
                 {profile.earningDetails.map((earningDetails) => (
                   <tr>
                     <td>{earningDetails.amount}</td>
-                    <td>{earningDetails.month.substring(0, 10)} </td>
+                    <td>{earningDetails.date} </td>
                   </tr>
                 ))}
               </table>
