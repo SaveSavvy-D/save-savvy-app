@@ -26,9 +26,7 @@ const Profile = () => {
       ) : (
         <div className='d-flex flex-column'>
           <ProfileHeader selection={setSelection} />
-          <div className='bg-light-grey m-4'>
-            {showSelected ? <ProfileInfo /> : <ProfileEdit />}
-          </div>
+          {showSelected ? <ProfileInfo /> : <ProfileEdit />}
         </div>
       )}
     </div>

@@ -51,6 +51,19 @@ const profileSlice = createSlice({
       .addCase(updateProfile.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
         console.log(action);
+      })
+      .addCase(deleteProfile.pending, (state, action) => {
+        state.status = STATUSES.LOADING;
+      })
+      .addCase(deleteProfile.fulfilled, (state, action) => {
+        state.status = STATUSES.IDLE;
+        if (!action.payload.errors && action.payload.status) {
+          state.profile = null;
+        }
+      })
+      .addCase(deleteProfile.rejected, (state, action) => {
+        state.status = STATUSES.ERROR;
+        console.log(action);
       });
   },
 });
@@ -105,5 +118,22 @@ export const updateProfile = createAsyncThunk(
       }
     );
     return await res.json();
+  }
+);
+
+export const deleteProfile = createAsyncThunk(
+  'expense/deleteExpense',
+  async () => {
+    const token = getCookie('token');
+    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/profile`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+
+    return data;
   }
 );

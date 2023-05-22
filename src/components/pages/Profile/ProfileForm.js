@@ -138,7 +138,7 @@ const ProfileForm = () => {
                   <button
                     type='submit'
                     disabled={isSubmitting}
-                    className='border border-0 btn-green text-white mt-3 rounded px-2 py-1'
+                    className='border border-0 btn-green text-white mt-3 rounded px-4 py-1'
                   >
                     {profile ? 'Update' : 'Create'}
                   </button>
