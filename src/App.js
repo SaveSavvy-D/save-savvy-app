@@ -1,44 +1,38 @@
 import Header from './components/common/Header';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { Expenses } from './components/pages/Expense/Expenses';
 import Authentication from './components/pages/authentication/Authentication';
 import { Budgets } from './components/pages/Budget/Budgets';
 import Profile from './components/pages/Profile/Profile';
 import Dashboard from './components/pages/Dashboard/Dashboard';
 import { Alerts } from './components/pages/alert/Alerts';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from './store/userSlice';
+import { useSelector } from 'react-redux';
+import PrivateRoute from './components/routing/PrivateRoute';
+import { AppSpinner } from './components/common/AppSpinner';
 
 function App() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { authSuccess } = useSelector((state) => state.user);
-  const [fetchingUser, setFetchingUser] = useState(true);
-
-  useEffect(() => {
-    console.log('In app.js useEffect');
-    const fetchData = async () => {
-      await dispatch(fetchUser());
-      setFetchingUser(false);
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    if (!fetchingUser && !authSuccess) navigate('/auth');
-  }, [fetchingUser, authSuccess]);
-
+  const { status } = useSelector((state) => state.user);
+  if (status === 'loading') return <AppSpinner />;
   return (
     <div className='App'>
       <Header />
       <Routes>
-        <Route exact path='/' element={<Dashboard />} />
+        <Route
+          exact
+          path='/'
+          element={<PrivateRoute component={Dashboard} />}
+        />
         <Route path='/auth' element={<Authentication />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/expenses' element={<Expenses />} />
-        <Route path='/budgets' element={<Budgets />} />
-        <Route path='/budgets/:id/alerts' element={<Alerts />} />
+        <Route path='/profile' element={<PrivateRoute component={Profile} />} />
+        <Route
+          path='/expenses'
+          element={<PrivateRoute component={Expenses} />}
+        />
+        <Route path='/budgets' element={<PrivateRoute component={Budgets} />} />
+        <Route
+          path='/budgets/:id/alerts'
+          element={<PrivateRoute component={Alerts} />}
+        />
       </Routes>
     </div>
   );

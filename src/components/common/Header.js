@@ -2,14 +2,16 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faSackDollar } from '@fortawesome/free-solid-svg-icons';
-
 import '../css/Header.css';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../store/userSlice';
 
 function Header() {
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
   if (pathname === '/auth') {
     return null;
   }
@@ -38,8 +40,20 @@ function Header() {
               title={<FontAwesomeIcon icon={faUser} size='lg' />}
               id='basic-nav-dropdown'
             >
-              <NavDropdown.Item>Profile</NavDropdown.Item>
-              <NavDropdown.Item>Logout</NavDropdown.Item>
+              <NavDropdown.Item>
+                <Link className='custom-link' to='/profile'>
+                  Profile
+                </Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item>
+                <Link
+                  className='custom-link'
+                  onClick={() => dispatch(logout())}
+                  to='/auth'
+                >
+                  Logout
+                </Link>
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

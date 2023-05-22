@@ -11,7 +11,15 @@ const initialState = {
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    logout(state) {
+      state.user = '';
+      state.status = STATUSES.IDLE;
+      state.authSuccess = false;
+      state.authErrors = [];
+      Cookies.set('token', '');
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
@@ -70,6 +78,7 @@ const userSlice = createSlice({
   },
 });
 
+export const { logout } = userSlice.actions;
 export default userSlice.reducer;
 
 export const login = createAsyncThunk('user/login', async (creds) => {
