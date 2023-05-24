@@ -24,7 +24,6 @@ const profileSlice = createSlice({
       })
       .addCase(fetchProfile.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
-        console.log(action);
       })
       .addCase(createProfile.pending, (state, action) => {
         state.status = STATUSES.LOADING;
@@ -37,7 +36,6 @@ const profileSlice = createSlice({
       })
       .addCase(createProfile.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
-        console.log(action);
       })
       .addCase(updateProfile.pending, (state, action) => {
         state.status = STATUSES.LOADING;
@@ -50,7 +48,6 @@ const profileSlice = createSlice({
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
-        console.log(action);
       })
       .addCase(deleteProfile.pending, (state, action) => {
         state.status = STATUSES.LOADING;
@@ -63,7 +60,6 @@ const profileSlice = createSlice({
       })
       .addCase(deleteProfile.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
-        console.log(action);
       });
   },
 });
@@ -81,8 +77,7 @@ export const fetchProfile = createAsyncThunk(
         Authorization: `Bearer ${token}`,
       },
     });
-    const data = await res.json();
-    return data;
+    return await res.json();
   }
 );
 
@@ -132,8 +127,6 @@ export const deleteProfile = createAsyncThunk(
         Authorization: `Bearer ${token}`,
       },
     });
-    const data = await res.json();
-
-    return data;
+    return await res.json();
   }
 );
