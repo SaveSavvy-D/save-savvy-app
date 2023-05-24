@@ -2,15 +2,21 @@ import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { AlertForm } from './AlertForm';
 
-export const Alert = ({ index, alert, currentPage, setCurrentPage }) => {
+export const Alert = ({
+  index,
+  alert,
+  currentPage,
+  setCurrentPage,
+  handleToggle,
+}) => {
   const [showAlertModal, setShowAlertModal] = useState(false);
-
   const handleShowAlert = () => {
     setShowAlertModal(true);
   };
   const handleCloseAlert = () => {
     setShowAlertModal(false);
   };
+
   return (
     <>
       <tr>
@@ -18,6 +24,11 @@ export const Alert = ({ index, alert, currentPage, setCurrentPage }) => {
         <td>{alert?.title}</td>
         <td>{alert?.thresholdPercentage}</td>
         <td>{alert?.date.substring(0, 10)}</td>
+        <td>
+          <Button onClick={() => handleToggle(alert)}>
+            {alert?.enabled ? 'Disable' : 'Enable'}
+          </Button>
+        </td>
         <td>
           <Button variant='link' onClick={handleShowAlert}>
             View
