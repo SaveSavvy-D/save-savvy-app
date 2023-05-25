@@ -5,9 +5,7 @@ import { AppSpinner } from '../common/AppSpinner';
 
 const PrivateRoute = ({ component: Component }) => {
   const { authSuccess, status } = useSelector((state) => state.user);
-  useEffect(() => {
-    console.log(authSuccess);
-  }, []);
+
   if (status === 'loading') return <AppSpinner />;
   if (authSuccess) return <Component />;
   if (!authSuccess) return <Navigate to='/auth' />;
