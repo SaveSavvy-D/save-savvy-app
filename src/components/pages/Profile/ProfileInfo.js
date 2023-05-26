@@ -29,8 +29,8 @@ const ProfileInfo = () => {
                     <th>Amount</th>
                     <th>Date</th>
                   </tr>
-                  {profile.earningDetails.map((earningDetails) => (
-                    <tr>
+                  {profile.earningDetails.map((earningDetails, index) => (
+                    <tr key={index}>
                       <td>{earningDetails.amount}</td>
                       <td>{earningDetails.date} </td>
                     </tr>
