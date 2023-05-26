@@ -159,3 +159,26 @@ input:focus {
 .bg-light-red:hover {
   background-color: rgb(206, 0, 0);
 }
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.create-profile-button {
+  text-decoration: none;
+  color: white;
+}
+.create-profile-button:hover {
+  text-decoration: none;
+  color: white;
+  background-color: #038e4b;
+}
+
+.create-profile-container {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+}

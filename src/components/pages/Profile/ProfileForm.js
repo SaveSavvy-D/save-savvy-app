@@ -6,12 +6,12 @@ import { createProfile, updateProfile } from '../../../store/profileSlice';
 
 const ProfileForm = () => {
   const { profile } = useSelector((state) => state.profile);
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const onSubmit = (values, { setSubmitting, resetForm }) => {
-    if (!profile) dispath(createProfile(values));
+    if (!profile) dispatch(createProfile(values));
     else {
       const { _id } = profile;
-      dispath(updateProfile({ values, _id }));
+      dispatch(updateProfile({ values, _id }));
     }
 
     setSubmitting(false);

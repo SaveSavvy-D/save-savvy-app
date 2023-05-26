@@ -92,7 +92,7 @@ const Dashboard = () => {
     budgetStatus === STATUSES.ERROR ||
     profileStatus === STATUSES.ERROR
   ) {
-    let errorArray = profileErrors || budgetErrors || expenseErrors;
+    let errorArray = budgetErrors || expenseErrors || profileErrors;
     errorArray = errorArray.map((error) => error.msg);
     showAllNotifications(errorArray, ToastColors.error);
   }

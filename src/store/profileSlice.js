@@ -5,6 +5,7 @@ import { getCookie } from '../utils/cookie';
 const initialState = {
   profile: null,
   status: STATUSES.IDLE,
+  errors: [],
 };
 
 const profileSlice = createSlice({
@@ -20,6 +21,9 @@ const profileSlice = createSlice({
         state.status = STATUSES.IDLE;
         if (!action.payload.errors && action.payload.status) {
           state.profile = action.payload.data.profile;
+        } else if (action.payload.errors) {
+          state.status = STATUSES.ERROR;
+          state.errors = action.payload.errors;
         }
       })
       .addCase(fetchProfile.rejected, (state, action) => {

@@ -12,6 +12,8 @@ import { STATUSES } from '../../../constants/statuses';
 import { AppSpinner } from '../../common/AppSpinner';
 import { showAllNotifications } from '../../../utils/notificationHelper';
 import ToastColors from '../../../constants/toastColors';
+import ProfileCreateButton from '../Profile/ProfileCreateButton';
+import { fetchProfile } from '../../../store/profileSlice';
 
 export const Budgets = () => {
   const dispatch = useDispatch();
@@ -21,11 +23,14 @@ export const Budgets = () => {
   useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchBudgets());
+    dispatch(fetchProfile());
   }, []);
 
   const handleShowModal = () => setShowModal(true);
 
   const handleCloseModal = () => setShowModal(false);
+
+  const { status: profileStatus } = useSelector((state) => state.profile);
 
   const { status: categoryStatus, errors } = useSelector(
     (state) => state.category
@@ -37,6 +42,9 @@ export const Budgets = () => {
   if (categoryStatus === STATUSES.ERROR) {
     const errorArray = errors.map((error) => error.msg);
     showAllNotifications(errorArray, ToastColors.error);
+  }
+  if (profileStatus === STATUSES.ERROR) {
+    return <ProfileCreateButton />;
   }
 
   return (

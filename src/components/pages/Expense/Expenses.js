@@ -13,6 +13,8 @@ import { AppSpinner } from '../../common/AppSpinner';
 import { showAllNotifications } from '../../../utils/notificationHelper';
 import ToastColors from '../../../constants/toastColors';
 import { STATUSES } from '../../../constants/statuses';
+import { fetchProfile } from '../../../store/profileSlice';
+import ProfileCreateButton from '../Profile/ProfileCreateButton';
 
 export const Expenses = () => {
   const [expenseModal, setExpenseModal] = useState(false);
@@ -22,6 +24,7 @@ export const Expenses = () => {
   useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchExpenses());
+    dispatch(fetchProfile());
   }, []);
 
   const handleClose = () => setExpenseModal(false);
@@ -31,12 +34,18 @@ export const Expenses = () => {
     (state) => state.category
   );
 
+  const { status: profileStatus } = useSelector((state) => state.profile);
+
   if (categoryStatus === STATUSES.LOADING) {
     return <AppSpinner />;
   }
   if (categoryStatus === STATUSES.ERROR) {
     const errorArray = errors.map((error) => error.msg);
     showAllNotifications(errorArray, ToastColors.error);
+  }
+
+  if (profileStatus === STATUSES.ERROR) {
+    return <ProfileCreateButton />;
   }
 
   return (
