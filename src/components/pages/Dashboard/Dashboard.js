@@ -21,9 +21,10 @@ import {
   getGroupedExpenses,
 } from '../../../utils/Dashboard/Expenses/expensesHelper';
 import { getGroupedBudgets } from '../../../utils/Dashboard/Budgets/budgetsHelper';
+import { fetchProfile } from '../../../store/profileSlice';
 
 const Dashboard = () => {
-  const [expenditure, setExpediture] = useState(0);
+  const [expenditure, setExpenditure] = useState(0);
   const [groupedExpenses, setGroupedExpenses] = useState([]);
   const [expenseStackedBarChartData, setExpenseStackedBarChartData] = useState(
     []
@@ -45,9 +46,16 @@ const Dashboard = () => {
     errors: budgetErrors,
   } = useSelector((state) => state.budget);
 
+  const {
+    profile: profileData,
+    status: profileStatus,
+    errors: profileErrors,
+  } = useSelector((state) => state.profile);
+
   useEffect(() => {
     dispatch(fetchBudgets('all'));
     dispatch(fetchExpenses('all'));
+    dispatch(fetchProfile());
   }, []);
 
   useEffect(() => {
@@ -62,7 +70,7 @@ const Dashboard = () => {
         (acc, expense) => acc + expense.Amount,
         0
       );
-      setExpediture(total);
+      setExpenditure(total);
 
       const expenseBarChartData = getExpenseBarChartData(expenses);
       setExpenseStackedBarChartData(expenseBarChartData);
@@ -70,13 +78,21 @@ const Dashboard = () => {
       const groupedBudgets = getGroupedBudgets(groupedExpenses, budgets);
       setBudgetStackedBarChartData(groupedBudgets);
     }
-  }, [expenseData?.expenses, budgetData?.budgets]);
+  }, [expenseData?.expenses, budgetData?.budgets, profileData]);
 
-  if (expenseStatus === STATUSES.LOADING || budgetStatus === STATUSES.LOADING) {
+  if (
+    expenseStatus === STATUSES.LOADING ||
+    budgetStatus === STATUSES.LOADING ||
+    profileStatus === STATUSES.LOADING
+  ) {
     return <AppSpinner />;
   }
-  if (expenseStatus === STATUSES.ERROR || budgetStatus === STATUSES.ERROR) {
-    let errorArray = expenseErrors.concat(budgetErrors);
+  if (
+    expenseStatus === STATUSES.ERROR ||
+    budgetStatus === STATUSES.ERROR ||
+    profileStatus === STATUSES.ERROR
+  ) {
+    let errorArray = budgetErrors || expenseErrors || profileErrors;
     errorArray = errorArray.map((error) => error.msg);
     showAllNotifications(errorArray, ToastColors.error);
   }
@@ -85,7 +101,7 @@ const Dashboard = () => {
     <Container>
       <div className='dashboard-container'>
         <div className='dashboard-column-1'>
-          <DashboardCards expenditure={expenditure} />
+          <DashboardCards expenditure={expenditure} profile={profileData} />
           <div className='dashboard-card-stacked-bar-chart'>
             <ExpenseLineChart
               expenseStackedBarChartData={expenseStackedBarChartData}
@@ -100,7 +116,10 @@ const Dashboard = () => {
             />
           </div>
           <div className='dashboard-cards'>
-            <BudgetStackedBarChart data={budgetStackedBarChartData} />
+            <BudgetStackedBarChart
+              data={budgetStackedBarChartData}
+              currency={profileData?.currency}
+            />
           </div>
         </div>
         <ExpenseStackedBarChart

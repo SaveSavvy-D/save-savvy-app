@@ -1,10 +1,10 @@
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload, label, currency }) => {
   if (active && payload && payload.length) {
     return (
       <div className='custom-tooltip'>
         <p>{`${payload[0].payload.category}`}</p>
         <p>
-          Used: PKR
+          Used: {currency}
           <span
             className={
               payload[0].payload.remaining > 0

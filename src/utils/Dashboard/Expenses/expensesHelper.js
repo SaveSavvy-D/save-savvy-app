@@ -1,4 +1,4 @@
-import formatDate from '../../dateFormatter';
+import { formatDate } from '../../dateHelper';
 
 export const getGroupedExpenses = (expenses) => {
   const groupedExpenses = expenses.reduce((acc, curr) => {
