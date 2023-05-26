@@ -1,10 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getCookie } from '../utils/cookie';
 import { STATUSES } from '../constants/statuses';
-import {
-  fetchStateHelper,
-  rejectStateHelper,
-} from '../utils/reduxStateHelper';
+import { fetchStateHelper, rejectStateHelper } from '../utils/reduxStateHelper';
 
 const initialState = {
   data: [],
@@ -26,9 +23,7 @@ export const fetchNotifications = createAsyncThunk(
         },
       }
     );
-    const data = await res.json();
-
-    return data;
+    return await res.json();
   }
 );
 

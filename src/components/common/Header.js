@@ -20,7 +20,7 @@ import { logout } from '../../store/userSlice';
 function Header() {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
-  const { data: notifications } = useSelector((state) => state.notification);
+  const { data } = useSelector((state) => state.notification);
 
   useEffect(() => {
     dispatch(fetchNotifications());
@@ -49,12 +49,12 @@ function Header() {
               title={
                 <div className='bell-icon-wrapper'>
                   <FontAwesomeIcon icon={faBell} size='lg' />
-                  {notifications?.notifications?.filter(
+                  {data?.notifications?.filter(
                     (notification) => notification.read === false
                   ).length > 0 && (
                     <span className='notification-count'>
                       {
-                        notifications?.notifications?.filter(
+                        data?.notifications?.filter(
                           (notification) => notification.read === false
                         ).length
                       }
