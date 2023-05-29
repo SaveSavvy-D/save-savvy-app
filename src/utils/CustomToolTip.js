@@ -16,7 +16,7 @@ const CustomTooltip = ({ active, payload, label, currency }) => {
           </span>
           /<span>{`${payload[0].payload.threshold}`}</span>
         </p>
-        <p>{`End Date: ${payload[0].payload.endDate.substring(0, 10)}`}</p>
+        <p>{`End Date: ${payload[0].payload.month.substring(0, 10)}`}</p>
       </div>
     );
   }

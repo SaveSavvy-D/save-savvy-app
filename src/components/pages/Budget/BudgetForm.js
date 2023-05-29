@@ -69,8 +69,7 @@ export const BudgetForm = ({
         initialValues={{
           categoryTitle: budget?.categoryId?.title || '',
           threshold: budget?.threshold || '',
-          startDate: budget?.startDate?.substring(0, 10) || '',
-          endDate: budget?.endDate?.substring(0, 10) || '',
+          month: budget?.month?.substring(0, 10) || ''
         }}
         validationSchema={BudgetSchema}
         onSubmit={(values, { setSubmitting }) => {
@@ -136,32 +135,18 @@ export const BudgetForm = ({
                   {errors.threshold}
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group className='margin-bottom-3' controlId='startDate'>
-                <Form.Label>Start Date</Form.Label>
+              <Form.Group className='margin-bottom-3' controlId='month'>
+                <Form.Label>Budget Month</Form.Label>
                 <Form.Control
                   type='date'
-                  name='startDate'
+                  name='month'
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.startDate}
-                  isInvalid={touched.startDate && errors.startDate}
+                  value={values.month}
+                  isInvalid={touched.month && errors.month}
                 />
                 <Form.Control.Feedback type='invalid'>
-                  {errors.startDate}
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group className='margin-bottom-3' controlId='endDate'>
-                <Form.Label>End Date</Form.Label>
-                <Form.Control
-                  type='date'
-                  name='endDate'
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.endDate}
-                  isInvalid={touched.endDate && errors.endDate}
-                />
-                <Form.Control.Feedback type='invalid'>
-                  {errors.endDate}
+                  {errors.month}
                 </Form.Control.Feedback>
               </Form.Group>
             </Modal.Body>

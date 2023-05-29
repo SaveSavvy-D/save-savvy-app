@@ -33,8 +33,7 @@ export const Budget = ({ index, budget, currentPage, setCurrentPage }) => {
         <td>{index + 1 + (currentPage - 1) * 5}</td>
         <td>{budget?.categoryId.title}</td>
         <td>{budget?.threshold}</td>
-        <td>{budget?.startDate.substring(0, 10)}</td>
-        <td>{budget?.endDate.substring(0, 10)}</td>
+        <td>{budget?.month.substring(0, 10)}</td>
         <td>
           <Button variant='link' onClick={handleShowAlert}>
             Add

@@ -6,7 +6,7 @@ export const getGroupedBudgets = (groupedExpenses, budgets) => {
     if (matchingBudget) {
       groupedBudgets.push({
         threshold: matchingBudget.threshold,
-        endDate: matchingBudget.endDate,
+        month: matchingBudget.month,
         used: expense.Amount,
         category: expense.category,
         remaining: matchingBudget.threshold - expense.Amount,

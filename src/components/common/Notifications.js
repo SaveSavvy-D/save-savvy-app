@@ -60,7 +60,6 @@ export const Notifications = () => {
           } notificationCards`}
         >
           <Card.Body>
-            <Card.Title>Category</Card.Title>
             <Card.Text>{notification?.message}</Card.Text>
             <Card.Subtitle className='mb-2 text-muted'>
               {notification?.date.substring(0, 10) ||
