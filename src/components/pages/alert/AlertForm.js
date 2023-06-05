@@ -6,6 +6,7 @@ import { Formik } from 'formik';
 import { AlertSchema } from '../../../utils/yup/schemas';
 import {
   createAlert,
+  deleteAlert,
   fetchBudgetAlerts,
   updateAlert,
 } from '../../../store/alertSlice';
@@ -36,7 +37,10 @@ export const AlertForm = ({
     resetTable();
   };
 
-  const handleDeleteBudget = () => {};
+  const handleDeleteBudget = async (values) => {
+    await dispatch(deleteAlert({ id: alert._id }));
+    resetTable();
+  };
 
   return (
     <>
@@ -124,7 +128,7 @@ export const AlertForm = ({
                     {errors.thresholdPercentage}
                   </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group className='margin-bottom-3' controlId='startDate'>
+                <Form.Group className='margin-bottom-3' controlId='date'>
                   <Form.Label>Alert Date</Form.Label>
                   <Form.Control
                     type='date'

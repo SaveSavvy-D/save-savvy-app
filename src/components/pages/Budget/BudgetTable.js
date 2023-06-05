@@ -13,6 +13,7 @@ export const BudgetTable = ({ currentPage, setCurrentPage }) => {
   const dispatch = useDispatch();
 
   const { data, status, errors } = useSelector((state) => state.budget);
+  const { alertStatus, alertErrors } = useSelector((state) => state.alert);
 
   const getResults = (pageNum) => {
     setCurrentPage(pageNum);
@@ -26,6 +27,10 @@ export const BudgetTable = ({ currentPage, setCurrentPage }) => {
     const errorArray = errors.map((error) => error.msg);
     showAllNotifications(errorArray, ToastColors.error);
   }
+  if (alertStatus === STATUSES.ERROR) {
+    const errorArray = alertErrors.map((error) => error.msg);
+    showAllNotifications(errorArray, ToastColors.error);
+  }
 
   return (
     <>
@@ -35,8 +40,7 @@ export const BudgetTable = ({ currentPage, setCurrentPage }) => {
             <th>#</th>
             <th>Category</th>
             <th>Threshold</th>
-            <th>Start Date</th>
-            <th>End Date</th>
+            <th>Budget Month</th>
             <th>Add Alerts</th>
             <th>View Alerts</th>
             <th>Details</th>
