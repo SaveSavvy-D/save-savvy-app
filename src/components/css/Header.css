@@ -1,0 +1,49 @@
+.navbar {
+  background-color: #1dbb6f;
+  font-size: 18px;
+}
+
+.navbar-brand {
+  font-size: 30px;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.bell-icon-wrapper {
+  position: relative;
+}
+
+.notification-count {
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  padding: 2px 5px;
+  border-radius: 80%;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+}
+
+@media (max-width: 767px) {
+  .bell-icon-wrapper .notification-count {
+    position: relative;
+    left: -8px;
+  }
+}
+
+.dropdown-menu-wrapper {
+  min-width: 300px;
+  margin: 5px;
+  border: none;
+}
+
+.notificationCards {
+  border: none;
+  margin-bottom: 5px;
+}
+
+.unReadNotification {
+  background-color: rgb(226, 240, 253);
+}
